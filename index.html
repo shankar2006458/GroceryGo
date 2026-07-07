@@ -1,0 +1,1927 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GroceryGo</title>
+    <script src="https://cdn.tailwindcss.com/3.4.17">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js">
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #10b981;
+            --accent-dark: #059669;
+            --accent-light: #d1fae5;
+            --accent-soft: #ecfdf5;
+            --bg: #f8fafc;
+            --bg-secondary: #f1f5f9;
+            --surface: #ffffff;
+            --surface-hover: #f8fafc;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --border-light: #f1f5f9;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.04);
+            --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.12);
+            --glass-bg: rgba(255, 255, 255, 0.72);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --glass-blur: 16px;
+            --nav-bg: rgba(255, 255, 255, 0.78);
+            --nav-border: rgba(0, 0, 0, 0.06);
+            --radius-sm: 0.75rem;
+            --radius: 1rem;
+            --radius-lg: 1.5rem;
+            --radius-xl: 2rem;
+            --fab-gradient: linear-gradient(135deg, #10b981, #059669);
+            --transition-theme: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Theme: Emerald (default) */
+        [data-theme="emerald"] {
+            --accent: #10b981;
+            --accent-dark: #059669;
+            --accent-light: #d1fae5;
+            --accent-soft: #ecfdf5;
+            --bg: #f8fafc;
+            --bg-secondary: #f1f5f9;
+            --surface: #ffffff;
+            --surface-hover: #f8fafc;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --border-light: #f1f5f9;
+            --glass-bg: rgba(255, 255, 255, 0.72);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --nav-bg: rgba(255, 255, 255, 0.78);
+            --nav-border: rgba(0, 0, 0, 0.06);
+            --fab-gradient: linear-gradient(135deg, #10b981, #059669);
+            --stat-accent-1: #ecfdf5;
+            --stat-text-1: #059669;
+            --stat-accent-2: #f0fdfa;
+            --stat-text-2: #0d9488;
+            --stat-accent-3: #fffbeb;
+            --stat-text-3: #d97706;
+            --stat-accent-4: #f0f9ff;
+            --stat-text-4: #0284c7;
+        }
+        [data-theme="emerald"] body,
+        body[data-theme="emerald"] {
+            background: #f8fafc;
+            color: #0f172a;
+        }
+        [data-theme="emerald"] .dark\:bg-slate-700 {
+            background: #ffffff;
+        }
+        [data-theme="emerald"] .dark\:bg-slate-800 {
+            background: #ffffff;
+        }
+        [data-theme="emerald"] .dark\:text-white {
+            color: #0f172a;
+        }
+
+        /* Theme: Ocean */
+        [data-theme="ocean"] {
+            --accent: #3b82f6;
+            --accent-dark: #2563eb;
+            --accent-light: #dbeafe;
+            --accent-soft: #eff6ff;
+            --bg: #f8fafd;
+            --bg-secondary: #f0f4f8;
+            --surface: #ffffff;
+            --surface-hover: #f8fafd;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border: #e0e7ef;
+            --border-light: #f1f5f9;
+            --glass-bg: rgba(255, 255, 255, 0.74);
+            --glass-border: rgba(255, 255, 255, 0.55);
+            --nav-bg: rgba(255, 255, 255, 0.8);
+            --nav-border: rgba(0, 0, 0, 0.05);
+            --fab-gradient: linear-gradient(135deg, #3b82f6, #2563eb);
+            --stat-accent-1: #eff6ff;
+            --stat-text-1: #2563eb;
+            --stat-accent-2: #f0f9ff;
+            --stat-text-2: #0d9488;
+            --stat-accent-3: #fffbeb;
+            --stat-text-3: #d97706;
+            --stat-accent-4: #fdf2f8;
+            --stat-text-4: #be185d;
+        }
+        [data-theme="ocean"] body {
+            background: #f8fafd;
+            color: #0f172a;
+        }
+
+        /* Theme: Sunset */
+        [data-theme="sunset"] {
+            --accent: #f59e0b;
+            --accent-dark: #d97706;
+            --accent-light: #fef3c7;
+            --accent-soft: #fffbeb;
+            --bg: #fefdf8;
+            --bg-secondary: #fdf6e8;
+            --surface: #ffffff;
+            --surface-hover: #fefdf8;
+            --text-primary: #1c1917;
+            --text-secondary: #57534e;
+            --text-muted: #a8a29e;
+            --border: #e7e0d4;
+            --border-light: #f5efe4;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --nav-bg: rgba(255, 255, 255, 0.76);
+            --nav-border: rgba(0, 0, 0, 0.05);
+            --fab-gradient: linear-gradient(135deg, #f59e0b, #d97706);
+            --stat-accent-1: #fffbeb;
+            --stat-text-1: #d97706;
+            --stat-accent-2: #fef3c7;
+            --stat-text-2: #b45309;
+            --stat-accent-3: #f0fdf4;
+            --stat-text-3: #059669;
+            --stat-accent-4: #fdf2f8;
+            --stat-text-4: #be185d;
+        }
+        [data-theme="sunset"] body {
+            background: #fefdf8;
+            color: #1c1917;
+        }
+
+        /* Theme: Rose */
+        [data-theme="rose"] {
+            --accent: #ec4899;
+            --accent-dark: #db2777;
+            --accent-light: #fce7f3;
+            --accent-soft: #fdf2f8;
+            --bg: #fdf8fa;
+            --bg-secondary: #fdf2f7;
+            --surface: #ffffff;
+            --surface-hover: #fdf8fa;
+            --text-primary: #1c1917;
+            --text-secondary: #57534e;
+            --text-muted: #a8a29e;
+            --border: #f0dde8;
+            --border-light: #fdf2f7;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --nav-bg: rgba(255, 255, 255, 0.76);
+            --nav-border: rgba(0, 0, 0, 0.04);
+            --fab-gradient: linear-gradient(135deg, #ec4899, #db2777);
+            --stat-accent-1: #fdf2f8;
+            --stat-text-1: #db2777;
+            --stat-accent-2: #fce7f3;
+            --stat-text-2: #be185d;
+            --stat-accent-3: #fffbeb;
+            --stat-text-3: #d97706;
+            --stat-accent-4: #f0fdf4;
+            --stat-text-4: #059669;
+        }
+        [data-theme="rose"] body {
+            background: #fdf8fa;
+            color: #1c1917;
+        }
+
+        /* Theme: Midnight (dark) */
+        [data-theme="midnight"] {
+            --accent: #818cf8;
+            --accent-dark: #6366f1;
+            --accent-light: #312e81;
+            --accent-soft: #1e1b4b;
+            --bg: #0f172a;
+            --bg-secondary: #1e293b;
+            --surface: #1e293b;
+            --surface-hover: #334155;
+            --text-primary: #e2e8f0;
+            --text-secondary: #cbd5e1;
+            --text-muted: #64748b;
+            --border: #334155;
+            --border-light: #1e293b;
+            --glass-bg: rgba(15, 23, 42, 0.82);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --nav-bg: rgba(15, 23, 42, 0.85);
+            --nav-border: rgba(255, 255, 255, 0.06);
+            --fab-gradient: linear-gradient(135deg, #818cf8, #6366f1);
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5);
+            --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.6);
+            --stat-accent-1: #1e1b4b;
+            --stat-text-1: #a5b4fc;
+            --stat-accent-2: #1e293b;
+            --stat-text-2: #818cf8;
+            --stat-accent-3: #1e1b4b;
+            --stat-text-3: #fbbf24;
+            --stat-accent-4: #1e293b;
+            --stat-text-4: #38bdf8;
+        }
+        [data-theme="midnight"] body {
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        [data-theme="midnight"] input,
+        [data-theme="midnight"] select,
+        [data-theme="midnight"] textarea {
+            background: #1e293b;
+            color: #e2e8f0;
+            border-color: #334155;
+        }
+        [data-theme="midnight"] .card-item {
+            background: #1e293b;
+        }
+
+        * {
+            font-family: 'DM Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            transition: background-color var(--transition-theme), color var(--transition-theme);
+            background: var(--bg);
+            color: var(--text-primary);
+        }
+
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border);
+            transition: background var(--transition-theme), border-color var(--transition-theme), box-shadow var(--transition-theme);
+        }
+        .card-item {
+            background: var(--surface);
+            border: 1px solid var(--border-light);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            animation: cardIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+        .card-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent-light);
+        }
+        .card-item:active {
+            transform: scale(0.985);
+            transition: transform 0.1s ease;
+        }
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            animation: fadeIn 0.2s ease;
+        }
+        .fab-btn {
+            background: var(--fab-gradient);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fabPulse 3s ease-in-out infinite;
+        }
+        .fab-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28), 0 4px 10px rgba(0, 0, 0, 0.14);
+        }
+        .fab-btn:active {
+            transform: scale(0.94);
+            transition: transform 0.12s ease;
+        }
+        .nav-btn {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            border-radius: 0.75rem;
+            padding: 0.5rem 1rem;
+        }
+        .nav-btn:hover {
+            background: var(--accent-soft);
+        }
+        .nav-active {
+            color: var(--accent) !important;
+        }
+        .nav-active::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 0 0 3px 3px;
+            animation: navIndicatorIn 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .chip-active {
+            background: var(--accent) !important;
+            color: white !important;
+            border-color: var(--accent) !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        .chip-filter {
+            transition: all 0.2s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+        .chip-filter:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
+        }
+        .chip-filter:active {
+            transform: scale(0.95);
+        }
+        .confetti-piece {
+            position: fixed;
+            border-radius: 3px;
+            animation: confettiFall 3.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        .slide-up {
+            animation: slideUp 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .spending-bar {
+            transition: height 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            border-radius: 6px 6px 0 0;
+            min-height: 4px;
+            background: var(--accent);
+            opacity: 0.75;
+        }
+        .spending-bar:first-child {
+            background: var(--accent);
+            opacity: 0.5;
+        }
+        .spending-bar:nth-child(2) {
+            opacity: 0.58;
+        }
+        .spending-bar:nth-child(3) {
+            opacity: 0.66;
+        }
+        .spending-bar:nth-child(4) {
+            opacity: 0.74;
+        }
+        .spending-bar:nth-child(5) {
+            opacity: 0.84;
+        }
+        .spending-bar:last-child {
+            background: var(--accent-dark);
+            opacity: 1;
+        }
+        .stat-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: default;
+        }
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+        .view-section {
+            animation: viewEnter 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .theme-swatch {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2.5px solid transparent;
+            position: relative;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        .theme-swatch:hover {
+            transform: scale(1.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        .theme-swatch:active {
+            transform: scale(0.9);
+        }
+        .theme-swatch.active {
+            border-color: var(--text-primary);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+        .theme-popover {
+            animation: popoverIn 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+            transform-origin: top right;
+        }
+        .shimmer-bar {
+            background: linear-gradient(90deg, var(--accent) 0%, var(--accent-light) 50%, var(--accent) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 2s ease-in-out infinite;
+        }
+        .btn-press {
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-press:active {
+            transform: scale(0.94);
+        }
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--accent) !important;
+            box-shadow: 0 0 0 3px var(--accent-light) !important;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        #progress-bar {
+            transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .purchase-check-btn {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .purchase-check-btn:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 0 8px var(--accent-light);
+        }
+        .purchase-check-btn:active {
+            transform: scale(0.85);
+            transition: transform 0.1s ease;
+        }
+
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform: translateY(16px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        @keyframes viewEnter {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        @keyframes confettiFall {
+            0% {
+                opacity: 1;
+                transform: translateY(-40px) rotate(0deg) scale(1);
+            }
+            60% {
+                opacity: 0.8;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(105vh) rotate(820deg) scale(0.3);
+            }
+        }
+        @keyframes fabPulse {
+            0%,
+            100% {
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.1);
+            }
+            50% {
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.18), 0 0 0 12px var(--accent-light);
+            }
+        }
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+        @keyframes popoverIn {
+            from {
+                opacity: 0;
+                transform: scale(0.85) translateY(-8px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        @keyframes navIndicatorIn {
+            from {
+                width: 0;
+                opacity: 0;
+            }
+            to {
+                width: 20px;
+                opacity: 1;
+            }
+        }
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -20px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+        @keyframes checkPop {
+            0% {
+                transform: scale(0);
+            }
+            60% {
+                transform: scale(1.3);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        .check-animate {
+            animation: checkPop 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @media (max-width: 400px) {
+            .glass {
+                border-radius: 1rem !important;
+            }
+            .fab-btn {
+                width: 3.25rem;
+                height: 3.25rem;
+                bottom: 5.5rem;
+                right: 1rem;
+            }
+        }
+        @media (min-width: 401px) {
+            .fab-btn {
+                bottom: 6rem;
+                right: max(1.25rem, calc((100vw - 32rem) / 2 + 1.25rem));
+            }
+        }
+
+.overview-more-btn{
+    display:flex;
+    align-items:center;
+    gap:6px;
+
+    padding:7px 14px;
+
+    border-radius:999px;
+
+    background:rgba(255,255,255,.06);
+    border:1px solid var(--border);
+
+    color:var(--text-secondary);
+
+    font-size:12px;
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.28s ease;
+}
+
+.overview-more-btn:hover{
+    color:white;
+    background:var(--accent);
+    border-color:var(--accent);
+    transform:translateY(-2px);
+    box-shadow:0 8px 18px rgba(99,102,241,.28);
+}
+
+.overview-more-btn:hover i{
+    transform:translateX(3px);
+}
+
+.overview-more-btn i{
+    transition:.25s;
+}
+
+.overview-more-btn:active{
+    transform:scale(.95);
+}
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes slideDown {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(100%); opacity: 0; }
+}
+
+.modal-overlay.closing {
+    animation: fadeOut 0.25s ease forwards;
+}
+
+.modal-overlay.closing > div:first-child {
+    animation: slideDown 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+/* Main modal outline */
+.overview-modal{
+    border:1px solid var(--border);
+    box-shadow:
+        0 25px 60px rgba(0,0,0,.45),
+        inset 0 1px 0 rgba(255,255,255,.05);
+}
+.stat-card{
+    border:1px solid var(--border);
+    transition:.25s ease;
+    position:relative;
+    overflow:hidden;
+}
+/* Toast Styles */
+.toast-item {
+    pointer-events: auto;
+    animation: toastSlideIn 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toast-item.removing {
+    animation: toastSlideOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes toastSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes toastSlideOut {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.9);
+    }
+}
+
+/* Delete Modal Specific Animations */
+#modal-delete .slide-up {
+    animation: deleteModalIn 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes deleteModalIn {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+/* Date Tag Styles */
+.date-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    background: var(--accent-soft);
+    color: var(--accent-dark);
+    border: 1px solid var(--accent-light);
+}
+/* List View Card Styles */
+.list-card {
+    background: var(--surface);
+    border: 1px solid var(--border-light);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: cardIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.list-card.purchased-card {
+    opacity: 0.7;
+    cursor: default;
+    border-color: var(--border);
+}
+
+.list-card.purchased-card:hover {
+    transform: none;
+    box-shadow: var(--shadow-sm);
+    border-color: var(--border);
+}
+
+.list-card.active-card {
+    cursor: pointer;
+}
+
+.list-card.active-card:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
+    border-color: var(--accent-light);
+}
+
+.list-card.active-card:active {
+    transform: scale(0.985);
+    transition: transform 0.1s ease;
+}
+/* Today Stats Animation */
+@keyframes todayHighlight {
+    0%, 100% { 
+        box-shadow: 0 0 0 0 rgba(var(--accent-rgb, 16, 185, 129), 0.3);
+    }
+    50% { 
+        box-shadow: 0 0 0 8px rgba(var(--accent-rgb, 16, 185, 129), 0);
+    }
+}
+
+.today-active-highlight {
+    animation: todayHighlight 2s ease-in-out infinite;
+}
+
+/* Budget indicator */
+.over-budget {
+    color: #ef4444 !important;
+}
+
+.under-budget {
+    color: #10b981 !important;
+}
+    </style>
+</head>
+<body data-theme="emerald" class="min-h-screen pb-20 transition-colors duration-400">
+    <!-- Toast -->
+    <div id="limit-warning" class="hidden fixed top-4 left-1/2 -translate-x-1/2 bg-red-500 text-white px-5 py-2.5 rounded-2xl z-[9999] text-sm font-semibold shadow-xl" style="animation: toastIn 0.3s ease;">
+        Max 999 items reached!
+    </div>
+    <!-- Add this right after the existing limit-warning toast -->
+    <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-[10000] flex flex-col gap-2 pointer-events-none">
+        <!-- Toasts will be dynamically inserted here -->
+    </div>
+
+    <header class="sticky top-0 z-40 glass px-4 py-3">
+        <div class="flex items-center justify-between max-w-lg mx-auto">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl">🛒</span>
+                <h1 class="text-xl font-bold tracking-tight">GroceryGo</h1>
+            </div>
+            <div class="relative">
+                <button id="theme-toggle-btn" class="w-9 h-9 rounded-xl flex items-center justify-center hover:bg-gray-100 dark:hover:bg-slate-700 transition-all duration-200 btn-press" aria-label="Change theme" title="Change theme">
+                    <i data-lucide="palette" class="w-4.5 h-4.5" style="width:18px;height:18px;"></i>
+                </button>
+                <div id="theme-popover" class="theme-popover hidden absolute top-full right-0 mt-2 glass rounded-2xl p-3 shadow-xl z-50">
+                    <p class="text-xs font-semibold text-gray-500 mb-2.5 px-1">Choose Theme</p>
+                    <div class="flex gap-2">
+                        <div class="theme-swatch active" data-theme="emerald" style="background: linear-gradient(135deg, #10b981, #059669);" title="Emerald"></div>
+                        <div class="theme-swatch" data-theme="ocean" style="background: linear-gradient(135deg, #3b82f6, #2563eb);" title="Ocean"></div>
+                        <div class="theme-swatch" data-theme="sunset" style="background: linear-gradient(135deg, #f59e0b, #d97706);" title="Sunset"></div>
+                        <div class="theme-swatch" data-theme="rose" style="background: linear-gradient(135deg, #ec4899, #db2777);" title="Rose"></div>
+                        <div class="theme-swatch" data-theme="midnight" style="background: linear-gradient(135deg, #818cf8, #6366f1);" title="Midnight"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-lg mx-auto px-4 pt-4" id="main-content">
+        <!-- Dashboard -->
+        <section id="view-dashboard" class="view-section">
+<div class="glass rounded-2xl p-5 mb-4 shadow-lg">
+    <div class="flex items-center justify-between mb-4">
+        <div>
+            <h2 class="font-semibold text-sm uppercase tracking-wider text-gray-400">
+                📅 Today's Activity
+            </h2>
+            <p class="text-xs mt-1" style="color: var(--text-muted);" id="today-date-display"></p>
+        </div>
+        <button id="overview-more-btn" class="overview-more-btn">
+            <span>Detailed Stats</span>
+            <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+        </button>
+    </div> 
+    <div class="grid grid-cols-2 gap-3">
+        <div class="stat-card rounded-xl p-4 text-center cursor-pointer" style="background:var(--stat-accent-1);">
+            <p class="text-2xl font-bold" style="color:var(--stat-text-1);" id="stat-today-items">0</p>
+            <p class="text-xs font-medium text-gray-500 mt-1">Items Purchased</p>
+            <p class="text-[10px] mt-1" style="color: var(--text-muted);" id="stat-today-status">No purchases yet</p>
+        </div>
+        <div class="stat-card rounded-xl p-4 text-center cursor-pointer" style="background:var(--stat-accent-2);">
+            <p class="text-2xl font-bold" style="color:var(--stat-text-2);" id="stat-today-spent">₹0</p>
+            <p class="text-xs font-medium text-gray-500 mt-1">Amount Spent</p>
+            <p class="text-[10px] mt-1" style="color: var(--text-muted);" id="stat-today-budget">vs budget</p>
+        </div>
+        <div class="stat-card rounded-xl p-4 text-center cursor-pointer" style="background:var(--stat-accent-3);">
+            <p class="text-2xl font-bold" style="color:var(--stat-text-3);" id="stat-today-remaining">0</p>
+            <p class="text-xs font-medium text-gray-500 mt-1">Remaining Items</p>
+            <p class="text-[10px] mt-1" style="color: var(--text-muted);">in your list</p>
+        </div>
+        <div class="stat-card rounded-xl p-4 text-center cursor-pointer" style="background:var(--stat-accent-4);">
+            <p class="text-2xl font-bold" style="color:var(--stat-text-4);" id="stat-today-savings">₹0</p>
+            <p class="text-xs font-medium text-gray-500 mt-1">Savings Today</p>
+            <p class="text-[10px] mt-1" style="color: var(--text-muted);">vs estimated</p>
+        </div>
+    </div>
+</div>
+            <!-- Monthly Spending -->
+            <div class="glass rounded-2xl p-5 mb-4 shadow-lg">
+                <h3 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">Monthly Spending</h3>
+                <div class="flex items-end gap-1.5 h-28 px-1" id="spending-bars"></div>
+                <div class="flex justify-between text-[10px] text-gray-400 mt-2 px-1" id="spending-labels"></div>
+            </div>
+            <!-- Categories -->
+            <div class="glass rounded-2xl p-5 shadow-lg">
+                <h3 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">Categories</h3>
+                <div class="grid grid-cols-4 gap-2.5" id="dash-categories"></div>
+            </div>
+        </section>
+
+        <!-- List -->
+        <section id="view-list" class="hidden view-section">
+            <div class="mb-3 relative">
+                <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
+                <input id="search-input" type="text" placeholder="Search items..." class="w-full pl-10 pr-4 py-3 rounded-xl border text-sm focus:outline-none focus:ring-2 transition-all duration-200" style="border-color:var(--border);background:var(--surface);color:var(--text-primary);">
+            </div>
+            <div class="flex gap-2 overflow-x-auto pb-2.5 mb-3 scroll-smooth" id="category-filters" style="scrollbar-width:none;-ms-overflow-style:none;"></div>
+            <div id="item-list" class="space-y-2.5"></div>
+            <div id="empty-state" class="hidden text-center py-16">
+                <p class="text-6xl mb-4">🛒</p>
+                <p class="text-gray-400 font-medium">Your grocery list is empty</p>
+                <p class="text-xs text-gray-400 mt-1">Tap + to add items</p>
+            </div>
+        </section>
+
+        <!-- Shopping -->
+        <section id="view-shopping" class="hidden view-section">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="text-3xl">🛍️</span>
+                <h2 class="font-bold text-xl">Shopping Mode</h2>
+            </div>
+            <div id="shopping-progress" class="mb-4 hidden">
+                <div class="flex justify-between text-xs mb-1.5">
+                    <span id="progress-text" class="text-gray-500 font-medium"></span>
+                    <span id="progress-pct" class="font-semibold" style="color:var(--accent);"></span>
+                </div>
+                <div class="h-2.5 bg-gray-200 dark:bg-slate-700 rounded-full overflow-hidden shadow-inner">
+                    <div id="progress-bar" class="h-full shimmer-bar rounded-full transition-all duration-500"></div>
+                </div>
+            </div>
+            <div id="shopping-list" class="space-y-2.5"></div>
+            <div id="shopping-empty" class="hidden text-center py-16">
+                <p class="text-6xl mb-4">🎉</p>
+                <p class="text-gray-500 font-medium">All done!</p>
+                <p class="text-xs text-gray-400 mt-1">Amazing job! 🎉</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- FAB -->
+    <button id="fab-add" class="fab-btn fixed w-14 h-14 rounded-full flex items-center justify-center text-white z-50" aria-label="Add item">
+        <i data-lucide="plus" class="w-7 h-7"></i>
+    </button>
+
+    <!-- Bottom Nav -->
+    <nav class="fixed bottom-0 left-0 right-0 glass border-t z-40" style="background:var(--nav-bg);border-color:var(--nav-border);">
+        <div class="max-w-lg mx-auto flex justify-around py-1.5">
+            <button class="nav-btn nav-active flex flex-col items-center p-2" data-view="dashboard">
+                <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                <span class="text-[10px] mt-0.5 font-medium">Home</span>
+            </button>
+            <button class="nav-btn flex flex-col items-center p-2 text-gray-400" data-view="list">
+                <i data-lucide="list" class="w-5 h-5"></i>
+                <span class="text-[10px] mt-0.5 font-medium">List</span>
+            </button>
+            <button class="nav-btn flex flex-col items-center p-2 text-gray-400" data-view="shopping">
+                <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                <span class="text-[10px] mt-0.5 font-medium">Shop</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Add/Edit Modal -->
+    <div id="modal-add" class="fixed inset-0 modal-overlay z-50 hidden flex items-end justify-center">
+        <div class="bg-white dark:bg-slate-800 w-full max-w-lg rounded-t-3xl p-6 slide-up shadow-2xl" style="background:var(--surface);color:var(--text-primary);">
+            <h3 id="modal-add-title" class="font-bold text-lg mb-4">Add Item</h3>
+            <form id="form-add" class="space-y-3.5">
+                <input id="inp-name" type="text" placeholder="Item name" class="w-full px-4 py-3.5 rounded-xl border text-sm" style="border-color:var(--border);background:var(--bg);color:var(--text-primary);" required>
+                <div class="grid grid-cols-2 gap-3">
+                    <select id="inp-category" class="w-full px-4 py-3.5 rounded-xl border text-sm" style="border-color:var(--border);background:var(--bg);color:var(--text-primary);">
+                        <option value="Vegetables">🥬 Vegetables</option>
+                        <option value="Fruits">🍎 Fruits</option>
+                        <option value="Dairy">🥛 Dairy</option>
+                        <option value="Bakery">🍞 Bakery</option>
+                        <option value="Snacks">🍫 Snacks</option>
+                        <option value="Beverages">🥤 Beverages</option>
+                        <option value="Meat">🍖 Meat</option>
+                        <option value="Household">🧴 Household</option>
+                    </select>
+                    <select id="inp-unit" class="w-full px-4 py-3.5 rounded-xl border text-sm" style="border-color:var(--border);background:var(--bg);color:var(--text-primary);">
+                        <option value="pcs">pcs</option>
+                        <option value="kg">kg</option>
+                        <option value="g">g</option>
+                        <option value="L">L</option>
+                        <option value="ml">ml</option>
+                        <option value="pack">pack</option>
+                        <option value="dozen">dozen</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <input id="inp-qty" type="number" placeholder="Qty" class="w-full px-4 py-3.5 rounded-xl border text-sm" style="border-color:var(--border);background:var(--bg);color:var(--text-primary);" min="1" value="1">
+                    <input id="inp-price" type="number" placeholder="Est. price (₹)" class="w-full px-4 py-3.5 rounded-xl border text-sm" style="border-color:var(--border);background:var(--bg);color:var(--text-primary);" min="0">
+                </div>
+                <textarea id="inp-notes" placeholder="Notes (optional)" class="w-full px-4 py-3.5 rounded-xl border text-sm resize-none" style="border-color:var(--border);background:var(--bg);color:var(--text-primary);" rows="2"></textarea>
+                <div class="flex gap-5">
+                    <label class="flex items-center gap-2 text-sm cursor-pointer"><input type="checkbox" id="inp-fav" class="accent-emerald-500 w-4 h-4"> ⭐ Favorite</label>
+                    <label class="flex items-center gap-2 text-sm cursor-pointer"><input type="checkbox" id="inp-pin" class="accent-emerald-500 w-4 h-4"> 📌 Pinned</label>
+                </div>
+                <div class="flex gap-3 pt-2">
+                    <button type="button" id="btn-cancel-add" class="flex-1 py-3.5 rounded-xl border font-medium btn-press" style="border-color:var(--border);color:var(--text-secondary);">Cancel</button>
+                    <button type="submit" class="flex-1 py-3.5 rounded-xl text-white font-medium btn-press" style="background:var(--fab-gradient);">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Purchase Modal -->
+    <div id="modal-purchase" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center px-4">
+        <div class="bg-white dark:bg-slate-800 w-full max-w-sm rounded-3xl p-6 slide-up shadow-2xl" style="background:var(--surface);color:var(--text-primary);">
+            <h3 class="font-bold text-lg mb-2">Mark as Purchased</h3>
+            <p class="text-sm text-gray-500 mb-4">Enter the actual amount paid</p>
+            <p id="purchase-item-name" class="font-semibold mb-3 text-lg"></p>
+            <input id="inp-actual-price" type="number" placeholder="Actual amount (₹)" class="w-full px-4 py-3.5 rounded-xl border text-sm mb-4" style="border-color:var(--border);background:var(--bg);color:var(--text-primary);" min="0">
+            <div class="flex gap-3">
+                <button type="button" id="btn-cancel-purchase" class="flex-1 py-3.5 rounded-xl border font-medium btn-press" style="border-color:var(--border);color:var(--text-secondary);">Cancel</button>
+                <button type="button" id="btn-confirm-purchase" class="flex-1 py-3.5 rounded-xl text-white font-medium btn-press" style="background:var(--fab-gradient);">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+<div id="modal-delete" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center px-4">
+    <div class="bg-white w-full max-w-sm rounded-3xl p-6 slide-up shadow-2xl" style="background:var(--surface);color:var(--text-primary);">
+        <div class="text-center mb-4">
+            <div class="w-16 h-16 mx-auto mb-3 rounded-full flex items-center justify-center" style="background: #fee2e2;">
+                <i data-lucide="alert-triangle" class="w-8 h-8 text-red-500"></i>
+            </div>
+            <h3 class="font-bold text-lg">Delete Item?</h3>
+            <p class="text-sm mt-2" style="color:var(--text-secondary);">Are you sure you want to delete <strong id="delete-item-name" class="text-red-500">this item</strong>? This action cannot be undone.</p>
+        </div>
+        <div class="flex gap-3">
+            <button type="button" id="btn-cancel-delete" class="flex-1 py-3.5 rounded-xl border font-medium btn-press" style="border-color:var(--border);color:var(--text-secondary);">Cancel</button>
+            <button type="button" id="btn-confirm-delete" class="flex-1 py-3.5 rounded-xl text-white font-medium btn-press bg-red-500 hover:bg-red-600 transition-all">Delete</button>
+        </div>
+    </div>
+</div>
+
+<!-- Dashboard Overview Modal -->
+<div id="modal-overview" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center px-4">
+    <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-3xl p-6 slide-up shadow-2xl overview-modal" style="background:var(--surface);color:var(--text-primary);">
+        <div class="flex items-center justify-between mb-5">
+            <h3 class="font-bold text-lg">📊 Detailed Overview</h3>
+            <button id="btn-close-overview" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-100 dark:hover:bg-slate-700 transition-all btn-press">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <!-- Today -->
+            <div class="stat-card rounded-2xl p-4 text-center" style="background:var(--stat-accent-1);">
+                <p class="text-xs font-semibold text-gray-500 mb-1">📅 Today</p>
+                <p class="text-3xl font-bold" style="color:var(--stat-text-1);" id="overview-today-items">0</p>
+                <p class="text-xs text-gray-400 mt-1">items purchased</p>
+                <p class="text-lg font-bold mt-1" style="color:var(--stat-text-1);" id="overview-today-cost">₹0</p>
+            </div>
+            <!-- Yesterday -->
+            <div class="stat-card rounded-2xl p-4 text-center" style="background:var(--stat-accent-2);">
+                <p class="text-xs font-semibold text-gray-500 mb-1">📅 Yesterday</p>
+                <p class="text-3xl font-bold" style="color:var(--stat-text-2);" id="overview-yesterday-items">0</p>
+                <p class="text-xs text-gray-400 mt-1">items purchased</p>
+                <p class="text-lg font-bold mt-1" style="color:var(--stat-text-2);" id="overview-yesterday-cost">₹0</p>
+            </div>
+            <!-- Tomorrow -->
+            <div class="stat-card rounded-2xl p-4 text-center" style="background:var(--stat-accent-3);">
+                <p class="text-xs font-semibold text-gray-500 mb-1">📅 Tomorrow</p>
+                <p class="text-3xl font-bold" style="color:var(--stat-text-3);" id="overview-tomorrow-items">0</p>
+                <p class="text-xs text-gray-400 mt-1">items planned</p>
+                <p class="text-lg font-bold mt-1" style="color:var(--stat-text-3);" id="overview-tomorrow-cost">₹0</p>
+            </div>
+            <!-- This Year -->
+            <div class="stat-card rounded-2xl p-4 text-center" style="background:var(--stat-accent-4);">
+                <p class="text-xs font-semibold text-gray-500 mb-1">📅 This Year</p>
+                <p class="text-3xl font-bold" style="color:var(--stat-text-4);" id="overview-year-items">0</p>
+                <p class="text-xs text-gray-400 mt-1">items purchased</p>
+                <p class="text-lg font-bold mt-1" style="color:var(--stat-text-4);" id="overview-year-cost">₹0</p>
+            </div>
+        </div>
+        <button id="btn-close-overview-bottom" class="w-full mt-5 py-3.5 rounded-xl text-white font-medium btn-press" style="background:var(--fab-gradient);">
+            Close
+        </button>
+    </div>
+</div>
+
+    <script>
+        (function() {
+            // ─────────────────────────────────────
+            // Theme Manager
+            // ─────────────────────────────────────
+            const themeManager = {
+                currentTheme: 'emerald',
+                init() {
+                    const saved = localStorage.getItem('grocerygo_theme');
+                    if (saved && ['emerald', 'ocean', 'sunset', 'rose', 'midnight'].includes(saved)) {
+                        this.currentTheme = saved;
+                    }
+                    this.apply(this.currentTheme);
+                    this.setupUI();
+                },
+                apply(theme) {
+                    this.currentTheme = theme;
+                    document.body.setAttribute('data-theme', theme);
+                    // Toggle dark class for midnight theme (helps Tailwind dark: classes)
+                    if (theme === 'midnight') {
+                        document.body.classList.add('dark');
+                    } else {
+                        document.body.classList.remove('dark');
+                    }
+                    localStorage.setItem('grocerygo_theme', theme);
+                    this.updateSwatches();
+                    // Update accent color for checkboxes etc
+                    const accentMap = {
+                        emerald: '#10b981',
+                        ocean: '#3b82f6',
+                        sunset: '#f59e0b',
+                        rose: '#ec4899',
+                        midnight: '#818cf8'
+                    };
+                    document.querySelectorAll('.accent-emerald-500').forEach(el => {
+                        el.style.accentColor = accentMap[theme] || '#10b981';
+                    });
+                },
+                updateSwatches() {
+                    document.querySelectorAll('.theme-swatch').forEach(swatch => {
+                        swatch.classList.toggle('active', swatch.dataset.theme === this
+                            .currentTheme);
+                    });
+                },
+                setupUI() {
+                    const toggleBtn = document.getElementById('theme-toggle-btn');
+                    const popover = document.getElementById('theme-popover');
+
+                    toggleBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        popover.classList.toggle('hidden');
+                    });
+
+                    document.querySelectorAll('.theme-swatch').forEach(swatch => {
+                        swatch.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            const theme = swatch.dataset.theme;
+                            this.apply(theme);
+                            popover.classList.add('hidden');
+                            // Re-render current view to update theme-dependent styles
+                            showView();
+                            lucide.createIcons();
+                        });
+                    });
+
+                    document.addEventListener('click', (e) => {
+                        if (!popover.classList.contains('hidden') && !popover.contains(e
+                                .target) && e.target !== toggleBtn) {
+                            popover.classList.add('hidden');
+                        }
+                    });
+
+                    this.updateSwatches();
+                }
+            };
+
+            // ─────────────────────────────────────
+            // Local storage data layer
+            // ─────────────────────────────────────
+            const STORAGE_KEY = 'grocerygo_items';
+            const dataSdk = {
+                _handler: null,
+                init(handler) {
+                    this._handler = handler;
+                    const stored = localStorage.getItem(STORAGE_KEY);
+                    const data = stored ? JSON.parse(stored) : [];
+                    this._handler.onDataChanged(data);
+                },
+                _getAll() {
+                    const stored = localStorage.getItem(STORAGE_KEY);
+                    return stored ? JSON.parse(stored) : [];
+                },
+                _saveAll(items) {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+                    if (this._handler) this._handler.onDataChanged([...items]);
+                },
+                generateId() {
+                    if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+                        return crypto.randomUUID();
+                    }
+                    return 'id_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                },
+                async create(item) {
+                    const items = this._getAll();
+                    item.__backendId = this.generateId();
+                    items.push(item);
+                    this._saveAll(items);
+                },
+                async update(updatedItem) {
+                    const items = this._getAll();
+                    const index = items.findIndex(i => i.__backendId === updatedItem.__backendId);
+                    if (index !== -1) {
+                        items[index] = updatedItem;
+                        this._saveAll(items);
+                    }
+                },
+                async delete(item) {
+                    const items = this._getAll();
+                    const filtered = items.filter(i => i.__backendId !== item.__backendId);
+                    this._saveAll(filtered);
+                }
+            };
+
+            // ─────────────────────────────────────
+            // App logic
+            // ─────────────────────────────────────
+            const CATEGORIES = [
+                { name: 'Vegetables', emoji: '🥬' }, { name: 'Fruits', emoji: '🍎' }, { name: 'Dairy',
+                    emoji: '🥛' },
+                { name: 'Bakery', emoji: '🍞' }, { name: 'Snacks', emoji: '🍫' }, { name: 'Beverages',
+                    emoji: '🥤' },
+                { name: 'Meat', emoji: '🍖' }, { name: 'Household', emoji: '🧴' }
+            ];
+            let items = [],
+                currentView = 'dashboard',
+                editingItem = null,
+                purchasingItem = null,
+                activeCategory = '',
+                searchQuery = '';
+            let animationFrameIds = {};
+
+            // Animate counter
+            function closeModalWithAnimation(modalElement) {
+                if (modalElement.classList.contains('hidden')) return;
+                
+                modalElement.classList.add('closing');
+                
+                modalElement.addEventListener('animationend', function handler() {
+                    modalElement.classList.remove('closing');
+                    modalElement.classList.add('hidden');
+                    modalElement.removeEventListener('animationend', handler);
+                });
+            }
+            // Toast System
+// Toast System
+function showToast(message, type = 'success') {
+    const container = document.getElementById('toast-container');
+    
+    const icons = {
+        success: '<i data-lucide="check-circle" class="w-5 h-5" style="color:var(--accent);"></i>',
+        error: '<i data-lucide="x-circle" class="w-5 h-5 text-red-500"></i>',
+        warning: '<i data-lucide="alert-triangle" class="w-5 h-5 text-amber-500"></i>',
+        info: '<i data-lucide="info" class="w-5 h-5 text-blue-500"></i>'
+    };
+    
+    const toastEl = document.createElement('div');
+    toastEl.className = 'toast-item flex items-center gap-3 px-4 py-3 rounded-2xl border shadow-lg';
+    toastEl.style.background = 'var(--surface)';
+    toastEl.style.borderColor = 'var(--border)';
+    toastEl.style.color = 'var(--text-primary)';
+    toastEl.style.minWidth = '280px';
+    toastEl.style.maxWidth = '400px';
+    toastEl.style.backdropFilter = 'blur(12px)';
+    toastEl.style.webkitBackdropFilter = 'blur(12px)';
+    
+    // Add accent left border for visual appeal
+    if (type === 'success') {
+        toastEl.style.borderLeft = '4px solid var(--accent)';
+        toastEl.style.boxShadow = 'var(--shadow-lg)';
+    } else if (type === 'error') {
+        toastEl.style.borderLeft = '4px solid #ef4444';
+        toastEl.style.boxShadow = 'var(--shadow-lg)';
+    } else if (type === 'warning') {
+        toastEl.style.borderLeft = '4px solid #f59e0b';
+        toastEl.style.boxShadow = 'var(--shadow-lg)';
+    } else if (type === 'info') {
+        toastEl.style.borderLeft = '4px solid #3b82f6';
+        toastEl.style.boxShadow = 'var(--shadow-lg)';
+    }
+    
+    toastEl.innerHTML = `
+        ${icons[type]}
+        <span class="text-sm font-semibold flex-1" style="color:var(--text-primary);">${message}</span>
+        <button class="ml-2 p-1 rounded-lg transition-all btn-press" style="color:var(--text-muted);" onclick="this.parentElement.remove()">
+            <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+    `;
+    
+    container.appendChild(toastEl);
+    lucide.createIcons();
+    
+    // Auto remove after 3 seconds
+    setTimeout(() => {
+        if (toastEl.parentElement) {
+            toastEl.classList.add('removing');
+            setTimeout(() => toastEl.remove(), 300);
+        }
+    }, 3000);
+}
+
+// Delete Confirmation System
+let deleteTargetId = null;
+
+function confirmDelete(id) {
+    const item = items.find(i => i.__backendId === id);
+    if (!item) return;
+    
+    deleteTargetId = id;
+    document.getElementById('delete-item-name').textContent = `"${item.name}"`;
+    document.getElementById('modal-delete').classList.remove('hidden');
+}
+
+async function executeDelete() {
+    if (!deleteTargetId) return;
+    
+    const item = items.find(i => i.__backendId === deleteTargetId);
+    if (!item) return;
+    
+    const itemName = item.name;
+    
+    // Close modal
+    closeModalWithAnimation(document.getElementById('modal-delete'));
+    
+    // Perform delete
+    await dataSdk.delete(item);
+    
+    // Show success toast
+    showToast(`"${itemName}" deleted successfully`, 'success');
+    
+    deleteTargetId = null;
+}
+
+// Update the existing deleteItem function
+window.deleteItem = function(id) {
+    confirmDelete(id);
+};
+
+            function animateCounter(el, targetValue, prefix = '', duration = 550) {
+                const startValue = parseInt(el.textContent.replace(/[^0-9]/g, '')) || 0;
+                if (startValue === targetValue) {
+                    el.textContent = prefix + targetValue.toLocaleString('en-IN');
+                    return;
+                }
+                if (animationFrameIds[el.id]) cancelAnimationFrame(animationFrameIds[el.id]);
+                const startTime = performance.now();
+
+                function update(now) {
+                    const elapsed = now - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    const current = Math.round(startValue + (targetValue - startValue) * eased);
+                    el.textContent = prefix + current.toLocaleString('en-IN');
+                    if (progress < 1) {
+                        animationFrameIds[el.id] = requestAnimationFrame(update);
+                    } else {
+                        el.textContent = prefix + targetValue.toLocaleString('en-IN');
+                        delete animationFrameIds[el.id];
+                    }
+                }
+                animationFrameIds[el.id] = requestAnimationFrame(update);
+            }
+
+            // Nav
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (currentView === btn.dataset.view) return;
+                    currentView = btn.dataset.view;
+                    document.querySelectorAll('.nav-btn').forEach(b => { b.classList.remove(
+                            'nav-active');
+                        b.classList.add('text-gray-400'); });
+                    btn.classList.add('nav-active');
+                    btn.classList.remove('text-gray-400');
+                    showView();
+                });
+            });
+
+            function showView() {
+                const dashboard = document.getElementById('view-dashboard');
+                const list = document.getElementById('view-list');
+                const shopping = document.getElementById('view-shopping');
+                const main = document.getElementById('main-content');
+
+                // Quick crossfade
+                main.style.opacity = '0';
+                main.style.transform = 'translateY(4px)';
+                main.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+
+                setTimeout(() => {
+                    dashboard.classList.toggle('hidden', currentView !== 'dashboard');
+                    list.classList.toggle('hidden', currentView !== 'list');
+                    shopping.classList.toggle('hidden', currentView !== 'shopping');
+
+                    if (currentView === 'dashboard') renderDashboard();
+                    else if (currentView === 'list') renderList();
+                    else renderShopping();
+
+                    // Re-add view-section animation class
+                    const activeSection = document.querySelector(
+                        `#view-${currentView === 'dashboard' ? 'dashboard' : currentView === 'list' ? 'list' : 'shopping'}`
+                        );
+                    if (activeSection) {
+                        activeSection.classList.remove('view-section');
+                        void activeSection.offsetWidth;
+                        activeSection.classList.add('view-section');
+                    }
+
+                    main.style.opacity = '1';
+                    main.style.transform = 'translateY(0)';
+                    lucide.createIcons();
+                }, 180);
+            }
+
+function renderDashboard() {
+    const todayStr = new Date().toISOString().split('T')[0];
+    
+    // Today's stats
+    const todayItems = items.filter(i => i.purchased && i.purchased_at && i.purchased_at.split('T')[0] === todayStr);
+    const todayCount = todayItems.length;
+    const todaySpent = todayItems.reduce((s, i) => s + (i.actual_price || 0), 0);
+    const todayEstimated = todayItems.reduce((s, i) => s + (i.estimated_price || 0), 0);
+    const todaySavings = todayEstimated - todaySpent;
+    
+    // Remaining items (not purchased)
+    const remainingItems = items.filter(i => !i.purchased).length;
+    
+    // Update today's date display
+    const today = new Date();
+    document.getElementById('today-date-display').textContent = today.toLocaleDateString('en-IN', { 
+        weekday: 'long', 
+        day: 'numeric', 
+        month: 'long', 
+        year: 'numeric' 
+    });
+    
+    // Update status text
+    const statusEl = document.getElementById('stat-today-status');
+    if (todayCount === 0) {
+        statusEl.textContent = 'No purchases yet';
+        statusEl.style.color = 'var(--text-muted)';
+    } else if (todayCount < 3) {
+        statusEl.textContent = 'Just getting started';
+        statusEl.style.color = 'var(--accent)';
+    } else {
+        statusEl.textContent = 'Active shopping day! 🎉';
+        statusEl.style.color = 'var(--accent-dark)';
+    }
+    
+    // Update budget comparison
+    const budgetEl = document.getElementById('stat-today-budget');
+    if (todaySpent > todayEstimated && todayEstimated > 0) {
+        const over = todaySpent - todayEstimated;
+        budgetEl.textContent = `₹${over} over budget`;
+        budgetEl.style.color = '#ef4444';
+    } else if (todayEstimated > 0 && todaySpent < todayEstimated) {
+        const under = todayEstimated - todaySpent;
+        budgetEl.textContent = `₹${under} under budget`;
+        budgetEl.style.color = '#10b981';
+    } else {
+        budgetEl.textContent = 'No budget set';
+        budgetEl.style.color = 'var(--text-muted)';
+    }
+    
+    // Animate counters
+    animateCounter(document.getElementById('stat-today-items'), todayCount, '', 500);
+    animateCounter(document.getElementById('stat-today-spent'), todaySpent, '₹', 500);
+    animateCounter(document.getElementById('stat-today-remaining'), remainingItems, '', 500);
+    animateCounter(document.getElementById('stat-today-savings'), todaySavings, '₹', 500);
+    
+    // Make savings card red if negative (overspent)
+    const savingsCard = document.getElementById('stat-today-savings');
+    if (todaySavings < 0) {
+        savingsCard.style.color = '#ef4444';
+    } else {
+        savingsCard.style.color = 'var(--stat-text-4)';
+    }
+
+    renderSpending();
+    const dc = document.getElementById('dash-categories');
+    dc.innerHTML = CATEGORIES.map(c => {
+        const count = items.filter(i => i.category === c.name).length;
+        return `<div class="bg-white dark:bg-slate-700 rounded-xl p-3 text-center shadow-sm cursor-pointer hover:scale-105 transition-all duration-200 stat-card" onclick="jumpToCategory('${c.name}')" style="background:var(--surface);"><p class="text-xl">${c.emoji}</p><p class="text-[10px] mt-1 font-semibold">${c.name}</p><p class="text-[11px] text-gray-400 font-medium">${count}</p></div>`;
+    }).join('');
+}
+
+            function openOverviewModal() {
+    const now = new Date();
+    const todayStr = now.toISOString().split('T')[0];
+    
+    // Yesterday
+    const yesterday = new Date(now);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr = yesterday.toISOString().split('T')[0];
+    
+    // Tomorrow
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowStr = tomorrow.toISOString().split('T')[0];
+    
+    // This year
+    const yearStart = new Date(now.getFullYear(), 0, 1).toISOString().split('T')[0];
+
+    // Today stats
+    const todayItems = items.filter(i => i.purchased && i.purchased_at && i.purchased_at.split('T')[0] === todayStr);
+    const todayCount = todayItems.length;
+    const todayCost = todayItems.reduce((s, i) => s + (i.actual_price || 0), 0);
+
+    // Yesterday stats
+    const yesterdayItems = items.filter(i => i.purchased && i.purchased_at && i.purchased_at.split('T')[0] === yesterdayStr);
+    const yesterdayCount = yesterdayItems.length;
+    const yesterdayCost = yesterdayItems.reduce((s, i) => s + (i.actual_price || 0), 0);
+
+    // Tomorrow stats (items with estimated prices — planned)
+    const tomorrowItems = items.filter(i => !i.purchased && i.estimated_price > 0);
+    const tomorrowCount = tomorrowItems.length;
+    const tomorrowCost = tomorrowItems.reduce((s, i) => s + (i.estimated_price || 0), 0);
+
+    // This Year stats
+    const yearItems = items.filter(i => i.purchased && i.purchased_at && i.purchased_at.split('T')[0] >= yearStart);
+    const yearCount = yearItems.length;
+    const yearCost = yearItems.reduce((s, i) => s + (i.actual_price || 0), 0);
+
+    // Update modal
+    document.getElementById('overview-today-items').textContent = todayCount;
+    document.getElementById('overview-today-cost').textContent = '₹' + todayCost.toLocaleString('en-IN');
+    document.getElementById('overview-yesterday-items').textContent = yesterdayCount;
+    document.getElementById('overview-yesterday-cost').textContent = '₹' + yesterdayCost.toLocaleString('en-IN');
+    document.getElementById('overview-tomorrow-items').textContent = tomorrowCount;
+    document.getElementById('overview-tomorrow-cost').textContent = '₹' + tomorrowCost.toLocaleString('en-IN');
+    document.getElementById('overview-year-items').textContent = yearCount;
+    document.getElementById('overview-year-cost').textContent = '₹' + yearCost.toLocaleString('en-IN');
+
+    // Show modal
+    document.getElementById('modal-overview').classList.remove('hidden');
+    lucide.createIcons();
+}
+
+function closeOverviewModal() {
+    closeModalWithAnimation(document.getElementById('modal-overview'));
+}
+
+            function renderSpending() {
+                const now = new Date();
+                const months = [];
+                for (let i = 5; i >= 0; i--) {
+                    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+                    months.push(d);
+                }
+                const totals = months.map(m => {
+                    return items.filter(i => i.purchased && i.purchased_at).reduce((s, i) => {
+                        const d = new Date(i.purchased_at);
+                        if (d.getMonth() === m.getMonth() && d.getFullYear() === m.getFullYear())
+                            return s + (i.actual_price || 0);
+                        return s;
+                    }, 0);
+                });
+                const max = Math.max(...totals, 1);
+                const barsContainer = document.getElementById('spending-bars');
+                // First set all to 0
+                barsContainer.innerHTML = totals.map(() =>
+                    `<div class="flex-1 spending-bar rounded-t" style="height:0px;"></div>`
+                ).join('');
+                // Then animate to target heights
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        barsContainer.innerHTML = totals.map(t =>
+                            `<div class="flex-1 spending-bar rounded-t" style="height:${Math.max((t/max)*100,4)}%;"></div>`
+                        ).join('');
+                    });
+                });
+                document.getElementById('spending-labels').innerHTML = months.map(m =>
+                    `<span class="flex-1 text-center font-medium">${m.toLocaleString('en',{month:'short'})}</span>`
+                ).join('');
+            }
+
+            window.jumpToCategory = function(cat) {
+                activeCategory = cat;
+                currentView = 'list';
+                document.querySelectorAll('.nav-btn').forEach(b => { b.classList.remove('nav-active');
+                    b.classList.add('text-gray-400'); if (b.dataset.view === 'list') { b.classList.add(
+                        'nav-active');
+                        b.classList.remove('text-gray-400'); } });
+                showView();
+            };
+
+            function renderCategoryFilters() {
+                const c = document.getElementById('category-filters');
+                c.innerHTML =
+                    `<button class="chip-filter px-3.5 py-2 rounded-full text-xs font-semibold border whitespace-nowrap transition-all ${!activeCategory?'chip-active':''}" onclick="filterCategory('')" style="${!activeCategory?'':'border-color:var(--border);color:var(--text-secondary);'}">All</button>` +
+                    CATEGORIES.map(cat =>
+                        `<button class="chip-filter px-3.5 py-2 rounded-full text-xs font-semibold border whitespace-nowrap transition-all ${activeCategory===cat.name?'chip-active':''}" onclick="filterCategory('${cat.name}')" style="${activeCategory===cat.name?'':'border-color:var(--border);color:var(--text-secondary);'}">${cat.emoji} ${cat.name}</button>`
+                    ).join('');
+            }
+            window.filterCategory = function(cat) { activeCategory = cat;
+                renderList(); };
+
+
+            
+function getDateGroup(purchasedAt) {
+    if (!purchasedAt) return null;
+    
+    const now = new Date();
+    const purchaseDate = new Date(purchasedAt);
+    
+    // Reset time for date comparison
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const purchaseDay = new Date(purchaseDate.getFullYear(), purchaseDate.getMonth(), purchaseDate.getDate());
+    
+    if (purchaseDay.getTime() === today.getTime()) {
+        return { label: 'Today', emoji: '📅' };
+    } else if (purchaseDay.getTime() === yesterday.getTime()) {
+        return { label: 'Yesterday', emoji: '📆' };
+    } else {
+        return { 
+            label: purchaseDate.toLocaleDateString('en-IN', { 
+                day: 'numeric', 
+                month: 'short', 
+                year: 'numeric' 
+            }),
+            emoji: '🗓️'
+        };
+    }
+}
+
+function groupItemsByDate(items) {
+    const purchasedItems = items.filter(i => i.purchased && i.purchased_at);
+    const unpurchasedItems = items.filter(i => !i.purchased);
+    
+    // Group purchased items by date
+    const groups = {};
+    purchasedItems.forEach(item => {
+        const dateGroup = getDateGroup(item.purchased_at);
+        if (!dateGroup) return;
+        
+        const key = dateGroup.label;
+        if (!groups[key]) {
+            groups[key] = { dateInfo: dateGroup, items: [] };
+        }
+        groups[key].items.push(item);
+    });
+    
+    // Sort groups by date (most recent first)
+    const sortedGroups = Object.values(groups).sort((a, b) => {
+        if (a.dateInfo.label === 'Today') return -1;
+        if (b.dateInfo.label === 'Today') return 1;
+        if (a.dateInfo.label === 'Yesterday') return -1;
+        if (b.dateInfo.label === 'Yesterday') return 1;
+        return new Date(b.items[0].purchased_at) - new Date(a.items[0].purchased_at);
+    });
+    
+    return { sortedGroups, unpurchasedItems };
+}
+function renderList() {
+    renderCategoryFilters();
+    let filtered = [...items];
+    if (activeCategory) filtered = filtered.filter(i => i.category === activeCategory);
+    if (searchQuery) filtered = filtered.filter(i => i.name.toLowerCase().includes(searchQuery.toLowerCase()));
+    
+    // Sort items (pinned/favorites first for unpurchased)
+    filtered.sort((a, b) => {
+        if (a.pinned !== b.pinned) return (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0);
+        if (a.favorite !== b.favorite) return (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0);
+        if (a.purchased !== b.purchased) return (a.purchased ? 1 : 0) - (b.purchased ? 1 : 0);
+        return 0;
+    });
+    
+    const container = document.getElementById('item-list');
+    const empty = document.getElementById('empty-state');
+    
+    if (!filtered.length) { 
+        container.innerHTML = '';
+        empty.classList.remove('hidden'); 
+        return; 
+    }
+    empty.classList.add('hidden');
+    
+    // Override container spacing - remove default gap
+    container.style.display = 'flex';
+    container.style.flexDirection = 'column';
+    container.style.gap = '0';
+    
+    // Group items by date
+    const { sortedGroups, unpurchasedItems } = groupItemsByDate(filtered);
+    
+    let html = '';
+    
+    // Show unpurchased items first (active list)
+    if (unpurchasedItems.length > 0) {
+        html += `
+            <div style="margin-bottom: 24px;">
+                <div class="flex items-center gap-2 mb-2.5 px-1">
+                    <span class="date-tag">📋 Active List</span>
+                    <span class="text-xs font-medium" style="color: var(--text-muted);">${unpurchasedItems.length} items</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                    ${unpurchasedItems.map((item, index) => renderItemCard(item, index)).join('')}
+                </div>
+            </div>
+        `;
+    }
+    
+    // Show purchased items grouped by date
+    if (sortedGroups.length > 0) {
+        html += `
+            <div style="margin-bottom: 16px;">
+                <div class="flex items-center gap-2 mb-3 px-1">
+                    <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--text-muted);">Purchase History</span>
+                    <div class="flex-1 h-px" style="background: var(--border);"></div>
+                </div>
+            </div>
+        `;
+        
+        sortedGroups.forEach((group, groupIndex) => {
+            html += `
+                <div style="margin-bottom: 24px;">
+                    <div class="flex items-center gap-2 mb-2.5 px-1">
+                        <span class="date-tag">${group.dateInfo.emoji} ${group.dateInfo.label}</span>
+                        <span class="text-xs font-medium" style="color: var(--text-muted);">${group.items.length} items</span>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:10px;">
+                        ${group.items.map((item, index) => renderItemCard(item, index, groupIndex * 100 + index)).join('')}
+                    </div>
+                </div>
+            `;
+        });
+    }
+    
+    container.innerHTML = html;
+    lucide.createIcons();
+}
+
+function renderItemCard(item, index, animationDelay = null) {
+    const cat = CATEGORIES.find(c => c.name === item.category);
+    const emoji = cat ? cat.emoji : '📦';
+    const price = item.purchased && item.actual_price ? `₹${item.actual_price}` : (item.estimated_price ?
+        `~₹${item.estimated_price}` : '');
+    const qtyStr = item.quantity ? `${item.quantity} ${item.unit||'pcs'}` : '';
+    const delay = animationDelay !== null ? animationDelay * 45 : index * 45;
+    const cardClass = item.purchased ? 'list-card purchased-card' : 'list-card active-card';
+    
+    return `<div class="${cardClass} rounded-2xl p-4 flex items-center gap-3" style="animation-delay:${delay}ms;">
+        <button onclick="initPurchase('${item.__backendId}')" class="purchase-check-btn w-7 h-7 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${item.purchased ? '' : 'border-gray-300'}" style="${item.purchased ? 'background:var(--accent);border-color:var(--accent);' : ''}" aria-label="${item.purchased ? 'Un-purchase' : 'Mark purchased'}">
+            ${item.purchased ? '<svg class="w-4 h-4 text-white check-animate" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>' : ''}
+        </button>
+        <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-1.5">
+                ${item.pinned?'<span class="text-xs">📌</span>':''}${item.favorite?'<span class="text-xs">⭐</span>':''}
+                <span class="font-semibold text-sm ${item.purchased?'line-through':''} truncate">${item.name}</span>
+                ${qtyStr?`<span class="text-[10px] text-gray-400 ml-1 font-medium">(${qtyStr})</span>`:''}
+            </div>
+            <div class="flex items-center gap-2 mt-1">
+                <span class="text-[11px] text-gray-400 font-medium">${emoji} ${item.category}</span>
+                ${price?`<span class="text-[11px] text-gray-500 font-medium">${price}</span>`:''}
+            </div>
+            ${item.notes?`<p class="text-[11px] text-gray-400 mt-1 truncate">📝 ${item.notes}</p>`:''}
+        </div>
+        <div class="flex gap-0.5">
+            ${!item.purchased ? `
+            <button onclick="startEdit('${item.__backendId}')" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-600 transition-all btn-press" aria-label="Edit">
+                <i data-lucide="pencil" class="w-4 h-4 text-gray-400"></i>
+            </button>
+            ` : ''}
+            <button onclick="deleteItem('${item.__backendId}')" class="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30 transition-all btn-press" aria-label="Delete">
+                <i data-lucide="trash-2" class="w-4 h-4 text-red-400"></i>
+            </button>
+        </div>
+    </div>`;
+}
+
+            function renderShopping() {
+                const remaining = items.filter(i => !i.purchased).sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) ||
+                    (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0));
+                const purchased = items.filter(i => i.purchased);
+                const container = document.getElementById('shopping-list'),
+                    empty = document.getElementById('shopping-empty'),
+                    prog = document.getElementById('shopping-progress');
+                if (items.length) {
+                    prog.classList.remove('hidden');
+                    const pct = items.length ? Math.round(purchased.length / items.length * 100) : 0;
+                    document.getElementById('progress-text').textContent =
+                        `${purchased.length} of ${items.length} items`;
+                    document.getElementById('progress-pct').textContent = pct + '%';
+                    document.getElementById('progress-bar').style.width = pct + '%';
+                } else { prog.classList.add('hidden'); }
+                if (!remaining.length && purchased.length) { empty.classList.remove('hidden');
+                    container.innerHTML = '';
+                    triggerConfetti(); return; }
+                if (!remaining.length && !purchased.length) { empty.classList.add('hidden');
+                    container.innerHTML =
+                        '<p class="text-center text-gray-400 py-8 font-medium">No items yet</p>'; return; }
+                empty.classList.add('hidden');
+                container.innerHTML = remaining.map((item, index) => {
+                    const cat = CATEGORIES.find(c => c.name === item.category);
+                    const qtyStr = item.quantity ? `${item.quantity} ${item.unit||'pcs'}` : '';
+                    const delay = index * 40;
+                    return `<div class="list-card active-card rounded-2xl p-4 flex items-center gap-4" style="animation-delay:${delay}ms;background:var(--surface);border-color:var(--border-light);">
+                <button onclick="initPurchase('${item.__backendId}')" class="purchase-check-btn w-10 h-10 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all" style="border-color:var(--accent);" aria-label="Mark purchased"><i data-lucide="check" class="w-5 h-5" style="color:var(--accent);"></i></button>
+                <div class="flex-1"><p class="font-semibold text-sm">${item.name} ${qtyStr?`<span class="text-xs text-gray-400 font-medium">(${qtyStr})</span>`:''}</p><p class="text-xs text-gray-400 font-medium">${cat?cat.emoji:''} ${item.category}</p></div>
+                ${item.estimated_price?`<span class="text-sm font-semibold text-gray-500">~₹${item.estimated_price}</span>`:''}
+            </div>`;
+                }).join('') + (purchased.length ? `<p class="text-xs text-gray-400 mt-5 mb-3 font-semibold uppercase tracking-wider">✓ Done (${purchased.length})</p>` +
+                    purchased.slice(0, 5).map(i =>
+                        `<div class="bg-gray-50 dark:bg-slate-800 rounded-xl p-3 flex items-center gap-3 opacity-50 mb-1.5" style="background:var(--bg-secondary);"><span style="color:var(--accent);">✓</span><span class="line-through text-sm">${i.name}</span></div>`
+                    ).join('') + (purchased.length > 5 ?
+                        `<p class="text-xs text-gray-400 text-center mt-1 font-medium">+${purchased.length-5} more</p>` : '') :
+                    '');
+                lucide.createIcons();
+            }
+
+            // Purchase
+            window.initPurchase = function(id) {
+                const item = items.find(i => i.__backendId === id);
+                if (!item) return;
+                if (item.purchased) { unPurchase(item); return; }
+                purchasingItem = item;
+                document.getElementById('purchase-item-name').textContent = item.name;
+                document.getElementById('inp-actual-price').value = item.estimated_price || '';
+                document.getElementById('modal-purchase').classList.remove('hidden');
+                document.getElementById('inp-actual-price').focus();
+            };
+
+            async function unPurchase(item) {
+                await dataSdk.update({ ...item, purchased: false, actual_price: 0, purchased_at: '' });
+                showToast(`"${item.name}" moved back to shopping list`, 'info')
+            }
+
+            document.getElementById('btn-confirm-purchase').addEventListener('click', async () => {
+                if (!purchasingItem) return;
+                const price = parseFloat(document.getElementById('inp-actual-price').value) || 0;
+                const btn = document.getElementById('btn-confirm-purchase');
+                btn.textContent = 'Saving...';
+                btn.disabled = true;
+                await dataSdk.update({ ...purchasingItem, purchased: true, actual_price: price,
+                    purchased_at: new Date().toISOString() });
+                showToast(`"${purchasingItem.name}" marked as purchased! 🎉`, 'success');
+                btn.textContent = 'Confirm';
+                btn.disabled = false;
+                closeModalWithAnimation(document.getElementById('modal-purchase'));
+                purchasingItem = null;
+            });
+            document.getElementById('btn-cancel-purchase').addEventListener('click', () => {
+                closeModalWithAnimation(document.getElementById('modal-purchase'));
+                purchasingItem = null;
+            });
+
+            // Add/Edit
+            document.getElementById('fab-add').addEventListener('click', () => {
+                editingItem = null;
+                document.getElementById('form-add').reset();
+                document.getElementById('inp-qty').value = 1;
+                document.getElementById('modal-add-title').textContent = 'Add Item';
+                document.getElementById('modal-add').classList.remove('hidden');
+                setTimeout(() => document.getElementById('inp-name').focus(), 350);
+            });
+            document.getElementById('btn-cancel-add').addEventListener('click', () => {
+                closeModalWithAnimation(document.getElementById('modal-add'));
+            });
+            // Delete Modal Event Listeners
+document.getElementById('btn-confirm-delete').addEventListener('click', executeDelete);
+document.getElementById('btn-cancel-delete').addEventListener('click', () => {
+    closeModalWithAnimation(document.getElementById('modal-delete'));
+    deleteTargetId = null;
+});
+document.getElementById('modal-delete').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeModalWithAnimation(document.getElementById('modal-delete'));
+        deleteTargetId = null;
+    }
+});
+
+// Add keyboard support for delete modal
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && !document.getElementById('modal-delete').classList.contains('hidden')) {
+        closeModalWithAnimation(document.getElementById('modal-delete'));
+        deleteTargetId = null;
+    }
+});
+
+            window.startEdit = function(id) {
+                const item = items.find(i => i.__backendId === id);
+                if (!item) return;
+                editingItem = item;
+                document.getElementById('inp-name').value = item.name;
+                document.getElementById('inp-category').value = item.category;
+                document.getElementById('inp-price').value = item.estimated_price || '';
+                document.getElementById('inp-qty').value = item.quantity || 1;
+                document.getElementById('inp-unit').value = item.unit || 'pcs';
+                document.getElementById('inp-notes').value = item.notes || '';
+                document.getElementById('inp-fav').checked = item.favorite;
+                document.getElementById('inp-pin').checked = item.pinned;
+                document.getElementById('modal-add-title').textContent = 'Edit Item';
+                document.getElementById('modal-add').classList.remove('hidden');
+                setTimeout(() => document.getElementById('inp-name').focus(), 350);
+            };
+
+            document.getElementById('form-add').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const name = document.getElementById('inp-name').value.trim();
+                if (!name) return;
+                const data = {
+                    name,
+                    category: document.getElementById('inp-category').value,
+                    estimated_price: parseFloat(document.getElementById('inp-price').value) || 0,
+                    favorite: document.getElementById('inp-fav').checked,
+                    pinned: document.getElementById('inp-pin').checked,
+                    quantity: parseInt(document.getElementById('inp-qty').value) || 1,
+                    unit: document.getElementById('inp-unit').value,
+                    notes: document.getElementById('inp-notes').value.trim()
+                };
+                if (editingItem) {
+                    await dataSdk.update({ ...editingItem, ...data });
+                    showToast(`"${name}" updated successfully`, 'success');
+                } else {
+                    if (items.length >= 999) {
+                        const warning = document.getElementById('limit-warning');
+                        warning.classList.remove('hidden');
+                        warning.style.animation = 'none';
+                        void warning.offsetWidth;
+                        warning.style.animation = 'toastIn 0.3s ease';
+                        setTimeout(() => warning.classList.add('hidden'), 3000);
+                        return;
+                    }
+                    await dataSdk.create({ ...data, purchased: false, actual_price: 0, created_at: new Date()
+                            .toISOString(), purchased_at: '' });
+                    showToast(`"${name}" added to your list`, 'success');
+                }
+                closeModalWithAnimation(document.getElementById('modal-add'));
+            });
+
+
+            document.getElementById('search-input').addEventListener('input', e => {
+                searchQuery = e.target.value;
+                renderList();
+            });
+
+            function triggerConfetti() {
+                const colors = ['#10b981', '#f59e0b', '#3b82f6', '#ec4899', '#8b5cf6', '#06b6d4', '#f97316',
+                    '#84cc16'
+                ];
+                const shapes = ['square', 'circle'];
+                for (let i = 0; i < 60; i++) {
+                    const el = document.createElement('div');
+                    el.className = 'confetti-piece';
+                    el.style.left = Math.random() * 100 + '%';
+                    el.style.top = -(Math.random() * 40) + 'px';
+                    el.style.width = (Math.random() * 10 + 5) + 'px';
+                    el.style.height = (Math.random() * 10 + 5) + 'px';
+                    el.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    el.style.borderRadius = shapes[Math.floor(Math.random() * shapes.length)] === 'circle' ?
+                        '50%' : '3px';
+                    el.style.animationDelay = Math.random() * 2.5 + 's';
+                    el.style.animationDuration = (Math.random() * 2 + 2.5) + 's';
+                    document.body.appendChild(el);
+                    setTimeout(() => el.remove(), 5000);
+                }
+            }
+
+            const handler = {
+                onDataChanged(data) {
+                    items = data;
+                    showView();
+                    lucide.createIcons();
+                }
+            };
+
+            // Overview Modal
+            document.getElementById('overview-more-btn').addEventListener('click', openOverviewModal);
+            document.getElementById('btn-close-overview').addEventListener('click', closeOverviewModal);
+            document.getElementById('btn-close-overview-bottom').addEventListener('click', closeOverviewModal);
+            document.getElementById('modal-overview').addEventListener('click', function(e) {
+                if (e.target === this) closeOverviewModal();
+            });
+
+            // Initialize
+            (async () => {
+                themeManager.init();
+                await dataSdk.init(handler);
+                lucide.createIcons();
+                showView();
+            })();
+        })();
+    </script>
+</body>
+</html>
