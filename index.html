@@ -941,6 +941,29 @@
                     <input id="inp-qty" type="number" placeholder="Qty" class="w-full px-4 py-3.5 rounded-xl border text-sm" style="border-color:var(--border);background:var(--bg);color:var(--text-primary);" min="1" value="1">
                     <input id="inp-price" type="number" placeholder="Est. price (₹)" class="w-full px-4 py-3.5 rounded-xl border text-sm" style="border-color:var(--border);background:var(--bg);color:var(--text-primary);" min="0">
                 </div>
+                <!-- Purchase Plan -->
+                <div class="space-y-2">
+                    <label class="text-sm font-semibold" style="color: var(--text-secondary);">📅 Purchase Plan</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <label class="flex items-center gap-2 p-2.5 rounded-xl border cursor-pointer hover:bg-gray-50 transition-all" style="border-color:var(--border);">
+                            <input type="radio" name="purchase-plan" value="today" class="accent-emerald-500 w-4 h-4">
+                            <span class="text-sm font-medium">Today</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2.5 rounded-xl border cursor-pointer hover:bg-gray-50 transition-all" style="border-color:var(--border);">
+                            <input type="radio" name="purchase-plan" value="tomorrow" class="accent-emerald-500 w-4 h-4">
+                            <span class="text-sm font-medium">Tomorrow</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2.5 rounded-xl border cursor-pointer hover:bg-gray-50 transition-all" style="border-color:var(--border);">
+                            <input type="radio" name="purchase-plan" value="this-week" class="accent-emerald-500 w-4 h-4">
+                            <span class="text-sm font-medium">This Week</span>
+                        </label>
+                        <label class="flex items-center gap-2 p-2.5 rounded-xl border cursor-pointer hover:bg-gray-50 transition-all" style="border-color:var(--border);">
+                            <input type="radio" name="purchase-plan" value="custom" class="accent-emerald-500 w-4 h-4">
+                            <span class="text-sm font-medium">Custom Date</span>
+                        </label>
+                    </div>
+                    <input type="date" id="inp-custom-date" class="w-full px-4 py-3 rounded-xl border text-sm hidden" style="border-color:var(--border);background:var(--bg);color:var(--text-primary);" min="">
+                </div>
                 <textarea id="inp-notes" placeholder="Notes (optional)" class="w-full px-4 py-3.5 rounded-xl border text-sm resize-none" style="border-color:var(--border);background:var(--bg);color:var(--text-primary);" rows="2"></textarea>
                 <div class="flex gap-5">
                     <label class="flex items-center gap-2 text-sm cursor-pointer"><input type="checkbox" id="inp-fav" class="accent-emerald-500 w-4 h-4"> ⭐ Favorite</label>
@@ -1681,6 +1704,18 @@ function renderItemCard(item, index, animationDelay = null) {
     const delay = animationDelay !== null ? animationDelay * 45 : index * 45;
     const cardClass = item.purchased ? 'list-card purchased-card' : 'list-card active-card';
     
+    // Purchase plan display
+    let planTag = '';
+    if (!item.purchased && item.purchasePlan) {
+        const planLabels = {
+            'today': '📅 Today',
+            'tomorrow': '📅 Tomorrow', 
+            'this-week': '📅 This Week',
+            'custom': item.customDate ? `📅 ${new Date(item.customDate).toLocaleDateString('en-IN', {day:'numeric', month:'short'})}` : '📅 Planned'
+        };
+        planTag = `<span class="date-tag" style="font-size:10px;padding:2px 8px;">${planLabels[item.purchasePlan] || '📅 Planned'}</span>`;
+    }
+    
     return `<div class="${cardClass} rounded-2xl p-4 flex items-center gap-3" style="animation-delay:${delay}ms;">
         <button onclick="initPurchase('${item.__backendId}')" class="purchase-check-btn w-7 h-7 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${item.purchased ? '' : 'border-gray-300'}" style="${item.purchased ? 'background:var(--accent);border-color:var(--accent);' : ''}" aria-label="${item.purchased ? 'Un-purchase' : 'Mark purchased'}">
             ${item.purchased ? '<svg class="w-4 h-4 text-white check-animate" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>' : ''}
@@ -1690,6 +1725,7 @@ function renderItemCard(item, index, animationDelay = null) {
                 ${item.pinned?'<span class="text-xs">📌</span>':''}${item.favorite?'<span class="text-xs">⭐</span>':''}
                 <span class="font-semibold text-sm ${item.purchased?'line-through':''} truncate">${item.name}</span>
                 ${qtyStr?`<span class="text-[10px] text-gray-400 ml-1 font-medium">(${qtyStr})</span>`:''}
+                ${planTag}
             </div>
             <div class="flex items-center gap-2 mt-1">
                 <span class="text-[11px] text-gray-400 font-medium">${emoji} ${item.category}</span>
@@ -1710,45 +1746,124 @@ function renderItemCard(item, index, animationDelay = null) {
     </div>`;
 }
 
-            function renderShopping() {
-                const remaining = items.filter(i => !i.purchased).sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) ||
-                    (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0));
-                const purchased = items.filter(i => i.purchased);
-                const container = document.getElementById('shopping-list'),
-                    empty = document.getElementById('shopping-empty'),
-                    prog = document.getElementById('shopping-progress');
-                if (items.length) {
-                    prog.classList.remove('hidden');
-                    const pct = items.length ? Math.round(purchased.length / items.length * 100) : 0;
-                    document.getElementById('progress-text').textContent =
-                        `${purchased.length} of ${items.length} items`;
-                    document.getElementById('progress-pct').textContent = pct + '%';
-                    document.getElementById('progress-bar').style.width = pct + '%';
-                } else { prog.classList.add('hidden'); }
-                if (!remaining.length && purchased.length) { empty.classList.remove('hidden');
-                    container.innerHTML = '';
-                    triggerConfetti(); return; }
-                if (!remaining.length && !purchased.length) { empty.classList.add('hidden');
-                    container.innerHTML =
-                        '<p class="text-center text-gray-400 py-8 font-medium">No items yet</p>'; return; }
-                empty.classList.add('hidden');
-                container.innerHTML = remaining.map((item, index) => {
-                    const cat = CATEGORIES.find(c => c.name === item.category);
-                    const qtyStr = item.quantity ? `${item.quantity} ${item.unit||'pcs'}` : '';
-                    const delay = index * 40;
-                    return `<div class="list-card active-card rounded-2xl p-4 flex items-center gap-4" style="animation-delay:${delay}ms;background:var(--surface);border-color:var(--border-light);">
-                <button onclick="initPurchase('${item.__backendId}')" class="purchase-check-btn w-10 h-10 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all" style="border-color:var(--accent);" aria-label="Mark purchased"><i data-lucide="check" class="w-5 h-5" style="color:var(--accent);"></i></button>
-                <div class="flex-1"><p class="font-semibold text-sm">${item.name} ${qtyStr?`<span class="text-xs text-gray-400 font-medium">(${qtyStr})</span>`:''}</p><p class="text-xs text-gray-400 font-medium">${cat?cat.emoji:''} ${item.category}</p></div>
-                ${item.estimated_price?`<span class="text-sm font-semibold text-gray-500">~₹${item.estimated_price}</span>`:''}
-            </div>`;
-                }).join('') + (purchased.length ? `<p class="text-xs text-gray-400 mt-5 mb-3 font-semibold uppercase tracking-wider">✓ Done (${purchased.length})</p>` +
-                    purchased.slice(0, 5).map(i =>
-                        `<div class="bg-gray-50 dark:bg-slate-800 rounded-xl p-3 flex items-center gap-3 opacity-50 mb-1.5" style="background:var(--bg-secondary);"><span style="color:var(--accent);">✓</span><span class="line-through text-sm">${i.name}</span></div>`
-                    ).join('') + (purchased.length > 5 ?
-                        `<p class="text-xs text-gray-400 text-center mt-1 font-medium">+${purchased.length-5} more</p>` : '') :
-                    '');
-                lucide.createIcons();
-            }
+function renderShopping() {
+    const remaining = items.filter(i => !i.purchased).sort((a, b) => {
+        // Sort by purchase plan priority, then pinned/favorites
+        const planOrder = { 'today': 0, 'tomorrow': 1, 'this-week': 2, 'custom': 3, '': 4 };
+        const aPlan = planOrder[a.purchasePlan] ?? 4;
+        const bPlan = planOrder[b.purchasePlan] ?? 4;
+        if (aPlan !== bPlan) return aPlan - bPlan;
+        if (a.pinned !== b.pinned) return (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0);
+        if (a.favorite !== b.favorite) return (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0);
+        return 0;
+    });
+    
+    const purchased = items.filter(i => i.purchased);
+    const container = document.getElementById('shopping-list'),
+        empty = document.getElementById('shopping-empty'),
+        prog = document.getElementById('shopping-progress');
+    
+    if (items.length) {
+        prog.classList.remove('hidden');
+        const pct = items.length ? Math.round(purchased.length / items.length * 100) : 0;
+        document.getElementById('progress-text').textContent = `${purchased.length} of ${items.length} items`;
+        document.getElementById('progress-pct').textContent = pct + '%';
+        document.getElementById('progress-bar').style.width = pct + '%';
+    } else { 
+        prog.classList.add('hidden'); 
+    }
+    
+    if (!remaining.length && purchased.length) { 
+        empty.classList.remove('hidden');
+        container.innerHTML = '';
+        triggerConfetti(); 
+        return; 
+    }
+    if (!remaining.length && !purchased.length) { 
+        empty.classList.add('hidden');
+        container.innerHTML = '<p class="text-center text-gray-400 py-8 font-medium">No items yet</p>'; 
+        return; 
+    }
+    empty.classList.add('hidden');
+    
+    // Group remaining items by purchase plan
+    const planGroups = {
+        'today': { label: '📅 Today', items: [] },
+        'tomorrow': { label: '📅 Tomorrow', items: [] },
+        'this-week': { label: '📅 This Week', items: [] },
+        'custom': { label: '📅 Custom Date', items: [] },
+        '': { label: '📋 No Plan Set', items: [] }
+    };
+    
+    remaining.forEach(item => {
+        const plan = item.purchasePlan || '';
+        if (planGroups[plan]) {
+            planGroups[plan].items.push(item);
+        } else {
+            planGroups[''].items.push(item);
+        }
+    });
+    
+    let html = '';
+    
+    // Render grouped items
+    Object.entries(planGroups).forEach(([plan, group]) => {
+        if (group.items.length === 0) return;
+        
+        // Calculate group total
+        const groupTotal = group.items.reduce((sum, item) => sum + (item.estimated_price || 0), 0);
+        
+        html += `
+            <div style="margin-bottom: 20px;">
+                <div class="flex items-center justify-between mb-2.5 px-1">
+                    <div class="flex items-center gap-2">
+                        <span class="date-tag">${group.label}</span>
+                        <span class="text-xs font-medium" style="color: var(--text-muted);">${group.items.length} items</span>
+                    </div>
+                    ${groupTotal > 0 ? `<span class="text-xs font-semibold" style="color: var(--text-secondary);">~₹${groupTotal.toLocaleString('en-IN')}</span>` : ''}
+                </div>
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                    ${group.items.map((item, index) => {
+                        const cat = CATEGORIES.find(c => c.name === item.category);
+                        const qtyStr = item.quantity ? `${item.quantity} ${item.unit||'pcs'}` : '';
+                        const customDateStr = plan === 'custom' && item.customDate ? 
+                            new Date(item.customDate).toLocaleDateString('en-IN', {day:'numeric', month:'short'}) : '';
+                        return `<div class="list-card active-card rounded-2xl p-4 flex items-center gap-4" style="animation-delay:${index * 30}ms;background:var(--surface);border-color:var(--border-light);">
+                            <button onclick="initPurchase('${item.__backendId}')" class="purchase-check-btn w-10 h-10 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all" style="border-color:var(--accent);" aria-label="Mark purchased">
+                                <i data-lucide="check" class="w-5 h-5" style="color:var(--accent);"></i>
+                            </button>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-1.5">
+                                    ${item.pinned?'<span class="text-xs">📌</span>':''}${item.favorite?'<span class="text-xs">⭐</span>':''}
+                                    <p class="font-semibold text-sm truncate">${item.name} ${qtyStr?`<span class="text-xs text-gray-400 font-medium">(${qtyStr})</span>`:''}</p>
+                                </div>
+                                <p class="text-xs text-gray-400 font-medium">${cat?cat.emoji:''} ${item.category}${customDateStr ? ` · ${customDateStr}` : ''}</p>
+                                ${item.notes?`<p class="text-[11px] text-gray-400 mt-0.5 truncate">📝 ${item.notes}</p>`:''}
+                            </div>
+                            ${item.estimated_price?`<span class="text-sm font-semibold" style="color: var(--text-secondary);">~₹${item.estimated_price}</span>`:''}
+                        </div>`;
+                    }).join('')}
+                </div>
+            </div>
+        `;
+    });
+    
+    // Add purchased section
+    if (purchased.length) {
+        html += `
+            <div class="mt-4 pt-4" style="border-top: 1px solid var(--border);">
+                <p class="text-xs text-gray-400 mb-3 font-semibold uppercase tracking-wider">✓ Done (${purchased.length})</p>
+                ${purchased.slice(0, 5).map(i =>
+                    `<div class="rounded-xl p-3 flex items-center gap-3 opacity-50 mb-1.5" style="background:var(--bg-secondary);"><span style="color:var(--accent);">✓</span><span class="line-through text-sm">${i.name}</span></div>`
+                ).join('')}
+                ${purchased.length > 5 ? `<p class="text-xs text-gray-400 text-center mt-1 font-medium">+${purchased.length-5} more</p>` : ''}
+            </div>
+        `;
+    }
+    
+    container.innerHTML = html;
+    lucide.createIcons();
+}
 
             // Purchase
             window.initPurchase = function(id) {
@@ -1787,14 +1902,20 @@ function renderItemCard(item, index, animationDelay = null) {
             });
 
             // Add/Edit
-            document.getElementById('fab-add').addEventListener('click', () => {
-                editingItem = null;
-                document.getElementById('form-add').reset();
-                document.getElementById('inp-qty').value = 1;
-                document.getElementById('modal-add-title').textContent = 'Add Item';
-                document.getElementById('modal-add').classList.remove('hidden');
-                setTimeout(() => document.getElementById('inp-name').focus(), 350);
-            });
+document.getElementById('fab-add').addEventListener('click', () => {
+    editingItem = null;
+    document.getElementById('form-add').reset();
+    document.getElementById('inp-qty').value = 1;
+    document.getElementById('modal-add-title').textContent = 'Add Item';
+    
+    // Reset purchase plan
+    document.querySelectorAll('input[name="purchase-plan"]').forEach(r => r.checked = false);
+    document.getElementById('inp-custom-date').classList.add('hidden');
+    document.getElementById('inp-custom-date').value = '';
+    
+    document.getElementById('modal-add').classList.remove('hidden');
+    setTimeout(() => document.getElementById('inp-name').focus(), 350);
+});
             document.getElementById('btn-cancel-add').addEventListener('click', () => {
                 closeModalWithAnimation(document.getElementById('modal-add'));
             });
@@ -1819,27 +1940,65 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-            window.startEdit = function(id) {
-                const item = items.find(i => i.__backendId === id);
-                if (!item) return;
-                editingItem = item;
-                document.getElementById('inp-name').value = item.name;
-                document.getElementById('inp-category').value = item.category;
-                document.getElementById('inp-price').value = item.estimated_price || '';
-                document.getElementById('inp-qty').value = item.quantity || 1;
-                document.getElementById('inp-unit').value = item.unit || 'pcs';
-                document.getElementById('inp-notes').value = item.notes || '';
-                document.getElementById('inp-fav').checked = item.favorite;
-                document.getElementById('inp-pin').checked = item.pinned;
-                document.getElementById('modal-add-title').textContent = 'Edit Item';
-                document.getElementById('modal-add').classList.remove('hidden');
-                setTimeout(() => document.getElementById('inp-name').focus(), 350);
-            };
+// Purchase Plan - Show/Hide custom date input
+document.querySelectorAll('input[name="purchase-plan"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        const customDateInput = document.getElementById('inp-custom-date');
+        if (this.value === 'custom') {
+            customDateInput.classList.remove('hidden');
+            // Set min date to today
+            customDateInput.min = new Date().toISOString().split('T')[0];
+            customDateInput.focus();
+        } else {
+            customDateInput.classList.add('hidden');
+        }
+    });
+});
+
+window.startEdit = function(id) {
+    const item = items.find(i => i.__backendId === id);
+    if (!item) return;
+    editingItem = item;
+    document.getElementById('inp-name').value = item.name;
+    document.getElementById('inp-category').value = item.category;
+    document.getElementById('inp-price').value = item.estimated_price || '';
+    document.getElementById('inp-qty').value = item.quantity || 1;
+    document.getElementById('inp-unit').value = item.unit || 'pcs';
+    document.getElementById('inp-notes').value = item.notes || '';
+    document.getElementById('inp-fav').checked = item.favorite;
+    document.getElementById('inp-pin').checked = item.pinned;
+    
+    // Restore purchase plan
+    if (item.purchasePlan) {
+        const radio = document.querySelector(`input[name="purchase-plan"][value="${item.purchasePlan}"]`);
+        if (radio) {
+            radio.checked = true;
+            if (item.purchasePlan === 'custom') {
+                document.getElementById('inp-custom-date').classList.remove('hidden');
+                document.getElementById('inp-custom-date').value = item.customDate || '';
+            } else {
+                document.getElementById('inp-custom-date').classList.add('hidden');
+                document.getElementById('inp-custom-date').value = '';
+            }
+        }
+    } else {
+        document.querySelectorAll('input[name="purchase-plan"]').forEach(r => r.checked = false);
+        document.getElementById('inp-custom-date').classList.add('hidden');
+        document.getElementById('inp-custom-date').value = '';
+    }
+    
+    document.getElementById('modal-add-title').textContent = 'Edit Item';
+    document.getElementById('modal-add').classList.remove('hidden');
+    setTimeout(() => document.getElementById('inp-name').focus(), 350);
+};
 
             document.getElementById('form-add').addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const name = document.getElementById('inp-name').value.trim();
                 if (!name) return;
+                const purchasePlan = document.querySelector('input[name="purchase-plan"]:checked')?.value || '';
+                const customDate = document.getElementById('inp-custom-date').value;
+
                 const data = {
                     name,
                     category: document.getElementById('inp-category').value,
@@ -1848,7 +2007,9 @@ document.addEventListener('keydown', function(e) {
                     pinned: document.getElementById('inp-pin').checked,
                     quantity: parseInt(document.getElementById('inp-qty').value) || 1,
                     unit: document.getElementById('inp-unit').value,
-                    notes: document.getElementById('inp-notes').value.trim()
+                    notes: document.getElementById('inp-notes').value.trim(),
+                    purchasePlan: purchasePlan,
+                    customDate: purchasePlan === 'custom' ? customDate : ''
                 };
                 if (editingItem) {
                     await dataSdk.update({ ...editingItem, ...data });
