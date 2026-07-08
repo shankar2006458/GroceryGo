@@ -829,107 +829,207 @@ header:hover lottie-player{
         </div>
     </header>
 
-    <main class="max-w-lg mx-auto px-4 pt-4" id="main-content">
-        <!-- Dashboard -->
-        <section id="view-dashboard" class="view-section">
-<div class="glass rounded-2xl p-5 mb-4 shadow-lg">
-    <div class="flex items-center justify-between mb-4">
-        <div>
-            <h2 class="font-semibold text-sm uppercase tracking-wider text-gray-400">
-                📅 Today's Activity
-            </h2>
-            <p class="text-xs mt-1" style="color: var(--text-muted);" id="today-date-display"></p>
-        </div>
-        <button id="overview-more-btn" class="overview-more-btn">
-            <span>Detailed Stats</span>
-            <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
-        </button>
-    </div> 
-    <div class="grid grid-cols-2 gap-3">
-        <div class="stat-card rounded-xl p-4 text-center cursor-pointer" style="background:var(--stat-accent-1);">
-            <p class="text-2xl font-bold" style="color:var(--stat-text-1);" id="stat-today-items">0</p>
-            <p class="text-xs font-medium text-gray-500 mt-1">Items Purchased</p>
-            <p class="text-[10px] mt-1" style="color: var(--text-muted);" id="stat-today-status">No purchases yet</p>
-        </div>
-        <div class="stat-card rounded-xl p-4 text-center cursor-pointer" style="background:var(--stat-accent-2);">
-            <p class="text-2xl font-bold" style="color:var(--stat-text-2);" id="stat-today-spent">₹0</p>
-            <p class="text-xs font-medium text-gray-500 mt-1">Amount Spent</p>
-            <p class="text-[10px] mt-1" style="color: var(--text-muted);" id="stat-today-budget">vs budget</p>
-        </div>
-        <div class="stat-card rounded-xl p-4 text-center cursor-pointer" style="background:var(--stat-accent-3);">
-            <p class="text-2xl font-bold" style="color:var(--stat-text-3);" id="stat-today-remaining">0</p>
-            <p class="text-xs font-medium text-gray-500 mt-1">Remaining Items</p>
-            <p class="text-[10px] mt-1" style="color: var(--text-muted);">in your list</p>
-        </div>
-        <div class="stat-card rounded-xl p-4 text-center cursor-pointer" style="background:var(--stat-accent-4);">
-            <p class="text-2xl font-bold" style="color:var(--stat-text-4);" id="stat-today-savings">₹0</p>
-            <p class="text-xs font-medium text-gray-500 mt-1">Savings Today</p>
-            <p class="text-[10px] mt-1" style="color: var(--text-muted);">vs estimated</p>
-        </div>
-    </div>
-</div>
-<!-- Recent Purchases -->
-<div class="glass rounded-2xl p-5 mb-4 shadow-lg">
-    <div class="flex items-center justify-between mb-3">
-        <h3 class="font-semibold text-sm uppercase tracking-wider text-gray-400">🛍 Recently Purchased</h3>
-    </div>
-    <div id="recent-purchases" class="space-y-2.5">
-        <!-- Dynamic content -->
-    </div>
-    <button onclick="document.querySelector('[data-view=list]').click()" class="mt-3 w-full text-xs font-semibold py-2 rounded-xl transition-all btn-press" style="color: var(--accent); border: 1px solid var(--accent-light);">
-        View History →
-    </button>
-</div>
-            <!-- Categories -->
-            <div class="glass rounded-2xl p-5 shadow-lg">
-                <h3 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">Categories</h3>
-                <div class="grid grid-cols-4 gap-2.5" id="dash-categories"></div>
-            </div>
-        </section>
-
-        <!-- List -->
-<section id="view-list" class="hidden view-section">
-    <div class="flex items-center gap-3 mb-3">
-        <div class="flex-1 relative">
-            <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
-            <input id="search-input" type="text" placeholder="Search items..." class="w-full pl-10 pr-4 py-3 rounded-xl border text-sm focus:outline-none focus:ring-2 transition-all duration-200" style="border-color:var(--border);background:var(--surface);color:var(--text-primary);">
-        </div>
-        <button onclick="refreshList()" class="p-3 rounded-xl border transition-all btn-press" style="border-color:var(--border);" title="Refresh list">
-            <i data-lucide="refresh-cw" id="refresh-icon" class="w-4 h-4" style="color: var(--text-muted);"></i>
-        </button>
-    </div>
-    <div class="flex gap-2 overflow-x-auto pb-2.5 mb-3 scroll-smooth" id="category-filters" style="scrollbar-width:none;-ms-overflow-style:none;"></div>
-    <div id="item-list" class="space-y-2.5"></div>
-    <div id="empty-state" class="hidden text-center py-16">
-        <p class="text-6xl mb-4">🛒</p>
-        <p class="text-gray-400 font-medium">Your grocery list is empty</p>
-        <p class="text-xs text-gray-400 mt-1">Tap + to add items</p>
-    </div>
-</section>
-
-        <!-- Shopping -->
-        <section id="view-shopping" class="hidden view-section">
-            <div class="flex items-center gap-3 mb-4">
-                <span class="text-3xl">🛍️</span>
-                <h2 class="font-bold text-xl">Shopping Mode</h2>
-            </div>
-            <div id="shopping-progress" class="mb-4 hidden">
-                <div class="flex justify-between text-xs mb-1.5">
-                    <span id="progress-text" class="text-gray-500 font-medium"></span>
-                    <span id="progress-pct" class="font-semibold" style="color:var(--accent);"></span>
+<main class="max-w-lg mx-auto px-4 pt-4" id="main-content">
+    <!-- Dashboard -->
+    <section id="view-dashboard" class="view-section">
+        <div class="glass rounded-2xl p-5 mb-4 shadow-lg">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h2 class="font-semibold text-sm uppercase tracking-wider text-gray-400">📅 Today's Activity</h2>
+                    <p class="text-xs mt-1" style="color: var(--text-muted);" id="today-date-display"></p>
                 </div>
-                <div class="h-2.5 bg-gray-200 dark:bg-slate-700 rounded-full overflow-hidden shadow-inner">
-                    <div id="progress-bar" class="h-full shimmer-bar rounded-full transition-all duration-500"></div>
+                <button id="overview-more-btn" class="overview-more-btn">
+                    <span>Detailed Stats</span>
+                    <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+                </button>
+            </div> 
+            <div class="grid grid-cols-2 gap-3">
+                <div class="stat-card rounded-xl p-4 text-center cursor-pointer" style="background:var(--stat-accent-1);">
+                    <p class="text-2xl font-bold" style="color:var(--stat-text-1);" id="stat-today-items">0</p>
+                    <p class="text-xs font-medium text-gray-500 mt-1">Items Purchased</p>
+                    <p class="text-[10px] mt-1" style="color: var(--text-muted);" id="stat-today-status">No purchases yet</p>
+                </div>
+                <div class="stat-card rounded-xl p-4 text-center cursor-pointer" style="background:var(--stat-accent-2);">
+                    <p class="text-2xl font-bold" style="color:var(--stat-text-2);" id="stat-today-spent">₹0</p>
+                    <p class="text-xs font-medium text-gray-500 mt-1">Amount Spent</p>
+                    <p class="text-[10px] mt-1" style="color: var(--text-muted);" id="stat-today-budget">vs budget</p>
+                </div>
+                <div class="stat-card rounded-xl p-4 text-center cursor-pointer" style="background:var(--stat-accent-3);">
+                    <p class="text-2xl font-bold" style="color:var(--stat-text-3);" id="stat-today-remaining">0</p>
+                    <p class="text-xs font-medium text-gray-500 mt-1">Remaining Items</p>
+                    <p class="text-[10px] mt-1" style="color: var(--text-muted);">in your list</p>
+                </div>
+                <div class="stat-card rounded-xl p-4 text-center cursor-pointer" style="background:var(--stat-accent-4);">
+                    <p class="text-2xl font-bold" style="color:var(--stat-text-4);" id="stat-today-savings">₹0</p>
+                    <p class="text-xs font-medium text-gray-500 mt-1">Savings Today</p>
+                    <p class="text-[10px] mt-1" style="color: var(--text-muted);">vs estimated</p>
                 </div>
             </div>
-            <div id="shopping-list" class="space-y-2.5"></div>
-            <div id="shopping-empty" class="hidden text-center py-16">
-                <p class="text-6xl mb-4">🎉</p>
-                <p class="text-gray-500 font-medium">All done!</p>
-                <p class="text-xs text-gray-400 mt-1">Amazing job! 🎉</p>
+        </div>
+        <div class="glass rounded-2xl p-5 mb-4 shadow-lg">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="font-semibold text-sm uppercase tracking-wider text-gray-400">🛍 Recently Purchased</h3>
             </div>
-        </section>
-    </main>
+            <div id="recent-purchases" class="space-y-2.5"></div>
+            <button onclick="document.querySelector('[data-view=list]').click()" class="mt-3 w-full text-xs font-semibold py-2 rounded-xl transition-all btn-press" style="color: var(--accent); border: 1px solid var(--accent-light);">View History →</button>
+        </div>
+        <div class="glass rounded-2xl p-5 shadow-lg">
+            <h3 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">Quick Actions</h3>
+            <div id="dash-categories"></div>
+        </div>
+    </section>
+
+    <!-- List View -->
+    <section id="view-list" class="hidden view-section">
+        <div class="flex items-center gap-3 mb-3">
+            <div class="flex-1 relative">
+                <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
+                <input id="search-input" type="text" placeholder="Search items..." class="w-full pl-10 pr-4 py-3 rounded-xl border text-sm focus:outline-none focus:ring-2 transition-all duration-200" style="border-color:var(--border);background:var(--surface);color:var(--text-primary);">
+            </div>
+            <button onclick="refreshList()" class="p-3 rounded-xl border transition-all btn-press" style="border-color:var(--border);" title="Refresh list">
+                <i data-lucide="refresh-cw" id="refresh-icon" class="w-4 h-4" style="color: var(--text-muted);"></i>
+            </button>
+        </div>
+        <div class="flex gap-2 overflow-x-auto pb-2.5 mb-3 scroll-smooth" id="category-filters" style="scrollbar-width:none;-ms-overflow-style:none;"></div>
+        <div id="item-list" class="space-y-2.5"></div>
+        <div id="empty-state" class="hidden text-center py-16">
+            <p class="text-6xl mb-4">🛒</p>
+            <p class="text-gray-400 font-medium">Your grocery list is empty</p>
+            <p class="text-xs text-gray-400 mt-1">Tap + to add items</p>
+        </div>
+    </section>
+
+    <!-- Shopping Mode -->
+    <section id="view-shopping" class="hidden view-section">
+        <div class="flex items-center gap-3 mb-4">
+            <span class="text-3xl">🛍️</span>
+            <h2 class="font-bold text-xl">Shopping Mode</h2>
+        </div>
+        <div id="shopping-progress" class="mb-4 hidden">
+            <div class="flex justify-between text-xs mb-1.5">
+                <span id="progress-text" class="text-gray-500 font-medium"></span>
+                <span id="progress-pct" class="font-semibold" style="color:var(--accent);"></span>
+            </div>
+            <div class="h-2.5 bg-gray-200 dark:bg-slate-700 rounded-full overflow-hidden shadow-inner">
+                <div id="progress-bar" class="h-full shimmer-bar rounded-full transition-all duration-500"></div>
+            </div>
+        </div>
+        <div id="shopping-list" class="space-y-2.5"></div>
+        <div id="shopping-empty" class="hidden text-center py-16">
+            <p class="text-6xl mb-4">🎉</p>
+            <p class="text-gray-500 font-medium">All done!</p>
+            <p class="text-xs text-gray-400 mt-1">Amazing job! 🎉</p>
+        </div>
+    </section>
+
+    <!-- Alerts & Reminders -->
+    <section id="view-alerts" class="hidden view-section">
+        <div class="flex items-center gap-3 mb-4">
+            <button onclick="goBackToDashboard()" class="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-all btn-press">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            </button>
+            <span class="text-2xl">🔔</span>
+            <h2 class="font-bold text-xl">Alerts & Reminders</h2>
+        </div>
+        <div class="glass rounded-2xl p-5 mb-4">
+            <h3 class="font-semibold text-sm uppercase tracking-wider text-gray-400 mb-3">📅 Items to Buy Today</h3>
+            <div id="alerts-today-items" class="space-y-2"></div>
+        </div>
+        <div class="glass rounded-2xl p-5 mb-4">
+            <h3 class="font-semibold text-sm uppercase tracking-wider text-gray-400 mb-3">🔮 Planned for Tomorrow</h3>
+            <div id="alerts-tomorrow-items" class="space-y-2"></div>
+        </div>
+        <div class="glass rounded-2xl p-5">
+            <h3 class="font-semibold text-sm uppercase tracking-wider text-gray-400 mb-3">⚠️ Low Stock Alerts</h3>
+            <div id="alerts-low-stock" class="space-y-2"></div>
+        </div>
+    </section>
+
+    <!-- Frequently Bought -->
+    <section id="view-frequent" class="hidden view-section">
+        <div class="flex items-center gap-3 mb-4">
+            <button onclick="goBackToDashboard()" class="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-all btn-press">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            </button>
+            <span class="text-2xl">🔥</span>
+            <h2 class="font-bold text-xl">Frequently Bought</h2>
+        </div>
+        <div class="glass rounded-2xl p-5">
+            <p class="text-sm text-gray-400 mb-4">Your most purchased items for quick reorder</p>
+            <div id="frequent-items" class="space-y-2"></div>
+        </div>
+    </section>
+
+    <!-- Smart Suggestions -->
+    <section id="view-suggestions" class="hidden view-section">
+        <div class="flex items-center gap-3 mb-4">
+            <button onclick="goBackToDashboard()" class="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-all btn-press">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            </button>
+            <span class="text-2xl">💡</span>
+            <h2 class="font-bold text-xl">Smart Suggestions</h2>
+        </div>
+        <div class="glass rounded-2xl p-5">
+            <p class="text-sm text-gray-400 mb-4">Based on your purchase patterns</p>
+            <div id="suggestions-list" class="space-y-2"></div>
+        </div>
+    </section>
+
+    <!-- Budget Overview -->
+    <section id="view-budget" class="hidden view-section">
+        <div class="flex items-center gap-3 mb-4">
+            <button onclick="goBackToDashboard()" class="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-all btn-press">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            </button>
+            <span class="text-2xl">💰</span>
+            <h2 class="font-bold text-xl">Budget Overview</h2>
+        </div>
+        <div class="glass rounded-2xl p-5 mb-4">
+            <h3 class="font-semibold text-sm uppercase tracking-wider text-gray-400 mb-3">📅 This Month</h3>
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <div class="stat-card rounded-xl p-4 text-center" style="background: var(--stat-accent-1);">
+                    <p class="text-2xl font-bold" style="color: var(--stat-text-1);" id="budget-month-spent">₹0</p>
+                    <p class="text-xs font-medium text-gray-500 mt-1">Total Spent</p>
+                </div>
+                <div class="stat-card rounded-xl p-4 text-center" style="background: var(--stat-accent-3);">
+                    <p class="text-2xl font-bold" style="color: var(--stat-text-3);" id="budget-month-savings">₹0</p>
+                    <p class="text-xs font-medium text-gray-500 mt-1">Savings</p>
+                </div>
+            </div>
+            <div id="budget-month-details" class="space-y-2"></div>
+        </div>
+        <div class="glass rounded-2xl p-5">
+            <h3 class="font-semibold text-sm uppercase tracking-wider text-gray-400 mb-3">📊 This Year</h3>
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <div class="stat-card rounded-xl p-4 text-center" style="background: var(--stat-accent-2);">
+                    <p class="text-2xl font-bold" style="color: var(--stat-text-2);" id="budget-year-spent">₹0</p>
+                    <p class="text-xs font-medium text-gray-500 mt-1">Total Spent</p>
+                </div>
+                <div class="stat-card rounded-xl p-4 text-center" style="background: var(--stat-accent-4);">
+                    <p class="text-2xl font-bold" style="color: var(--stat-text-4);" id="budget-year-savings">₹0</p>
+                    <p class="text-xs font-medium text-gray-500 mt-1">Savings</p>
+                </div>
+            </div>
+            <div id="budget-year-details" class="space-y-2"></div>
+        </div>
+    </section>
+
+    <!-- Overdue Items -->
+    <section id="view-overdue" class="hidden view-section">
+        <div class="flex items-center gap-3 mb-4">
+            <button onclick="goBackToDashboard()" class="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-700 transition-all btn-press">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            </button>
+            <span class="text-2xl">❗</span>
+            <h2 class="font-bold text-xl">Overdue Items</h2>
+        </div>
+        <div class="glass rounded-2xl p-5">
+            <p class="text-sm text-gray-400 mb-4">Items past their planned date</p>
+            <div id="overdue-items" class="space-y-2"></div>
+        </div>
+    </section>
+    
+</main>
 
     <!-- FAB -->
     <button id="fab-add" class="fab-btn fixed w-14 h-14 rounded-full flex items-center justify-center text-white z-50" aria-label="Add item">
@@ -1048,6 +1148,8 @@ header:hover lottie-player{
     </div>
 </div>
 
+
+
 <!-- Dashboard Overview Modal -->
 <div id="modal-overview" class="fixed inset-0 modal-overlay z-50 hidden flex items-center justify-center px-4">
     <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-3xl p-6 slide-up shadow-2xl overview-modal" style="background:var(--surface);color:var(--text-primary);">
@@ -1086,6 +1188,14 @@ header:hover lottie-player{
                 <p class="text-xs text-gray-400 mt-1">items purchased</p>
                 <p class="text-lg font-bold mt-1" style="color:var(--stat-text-4);" id="overview-year-cost">₹0</p>
             </div>
+        </div>
+        <div class="flex justify-center items-center mt-3">
+            <p class="text-xs m-0">
+                <span style="color: var(--text-muted);">Developed by ~ </span>
+                <span class="font-semibold" style="color: var(--accent);">
+                    Shankar Prasad Pyke
+                </span>
+            </p>
         </div>
         <button id="btn-close-overview-bottom" class="w-full mt-5 py-3.5 rounded-xl text-white font-medium btn-press" style="background:var(--fab-gradient);">
             Close
@@ -1369,89 +1479,57 @@ window.deleteItem = function(id) {
             });
 
 function showView() {
-    const dashboard = document.getElementById('view-dashboard');
-    const list = document.getElementById('view-list');
-    const shopping = document.getElementById('view-shopping');
+    const allViews = ['view-dashboard','view-list','view-shopping','view-alerts','view-frequent','view-suggestions','view-budget','view-overdue'];
+    
+    allViews.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+    });
+    
+    const currentViewId = `view-${currentView}`;
+    const activeView = document.getElementById(currentViewId);
+    if (activeView) {
+        activeView.classList.remove('hidden');
+        activeView.classList.remove('view-section');
+        void activeView.offsetWidth;
+        activeView.classList.add('view-section');
+    }
+    
     const main = document.getElementById('main-content');
-
-    // Quick crossfade
-    main.style.opacity = '0';
-    main.style.transform = 'translateY(4px)';
-    main.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
-
-    setTimeout(() => {
-        dashboard.classList.toggle('hidden', currentView !== 'dashboard');
-        list.classList.toggle('hidden', currentView !== 'list');
-        shopping.classList.toggle('hidden', currentView !== 'shopping');
-
-        if (currentView === 'dashboard') renderDashboard();
-        else if (currentView === 'list') renderList();
-        else renderShopping();
-
-        // Re-add view-section animation class
-        const activeSection = document.querySelector(
-            `#view-${currentView === 'dashboard' ? 'dashboard' : currentView === 'list' ? 'list' : 'shopping'}`
-        );
-        if (activeSection) {
-            activeSection.classList.remove('view-section');
-            void activeSection.offsetWidth;
-            activeSection.classList.add('view-section');
-        }
-
-        main.style.opacity = '1';
-        main.style.transform = 'translateY(0)';
-        lucide.createIcons();
-
-        // 🔥 FIX: Scroll to top when switching views
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth' // 'smooth' for animated scroll, or 'auto' for instant
-        });
-        
-        // Also scroll the main content to top
-        main.scrollTop = 0;
-        
-    }, 180);
+    main.style.opacity = '1';
+    main.style.transform = 'translateY(0)';
+    
+    if (currentView === 'dashboard') renderDashboard();
+    else if (currentView === 'list') renderList();
+    else if (currentView === 'shopping') renderShopping();
+    
+    lucide.createIcons();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    main.scrollTop = 0;
 }
 
 function renderDashboard() {
     const todayStr = new Date().toISOString().split('T')[0];
     
-    // Today's purchased items
     const todayItems = items.filter(i => i.purchased && i.purchased_at && i.purchased_at.split('T')[0] === todayStr);
     const todayCount = todayItems.length;
     const todaySpent = todayItems.reduce((s, i) => s + (i.actual_price || 0), 0);
-    
-    // Today's estimated (purchased items' estimated prices)
     const todayEstimated = todayItems.reduce((s, i) => s + (i.estimated_price || 0) * (i.quantity || 1), 0);
     const todaySavings = todayEstimated - todaySpent;
     
-    // Remaining items (planned for today, not purchased)
     const remainingItems = items.filter(i => {
         if (i.purchased) return false;
-        
-        // Check if item is planned for today
         if (i.purchasePlan === 'today') return true;
-        
-        // Check if custom date matches today
         if (i.purchasePlan === 'custom' && i.customDate === todayStr) return true;
-        
-        // If no purchase plan set, consider it as today's item
         if (!i.purchasePlan) return true;
-        
         return false;
     }).length;
     
-    // Update today's date display
     const today = new Date();
     document.getElementById('today-date-display').textContent = today.toLocaleDateString('en-IN', { 
-        weekday: 'long', 
-        day: 'numeric', 
-        month: 'long', 
-        year: 'numeric' 
+        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' 
     });
     
-    // Update status text
     const statusEl = document.getElementById('stat-today-status');
     const todayPlannedItems = items.filter(i => {
         if (i.purchased) return false;
@@ -1475,27 +1553,22 @@ function renderDashboard() {
         statusEl.style.color = '#10b981';
     }
     
-    // Update budget comparison (for today's items only)
-    const todayPlannedCost = items
-        .filter(i => {
-            if (i.purchased) return false;
-            if (i.purchasePlan === 'today') return true;
-            if (i.purchasePlan === 'custom' && i.customDate === todayStr) return true;
-            if (!i.purchasePlan) return true;
-            return false;
-        })
-        .reduce((s, i) => s + (i.estimated_price || 0) * (i.quantity || 1), 0);
+    const todayPlannedCost = items.filter(i => {
+        if (i.purchased) return false;
+        if (i.purchasePlan === 'today') return true;
+        if (i.purchasePlan === 'custom' && i.customDate === todayStr) return true;
+        if (!i.purchasePlan) return true;
+        return false;
+    }).reduce((s, i) => s + (i.estimated_price || 0) * (i.quantity || 1), 0);
 
     const budgetEl = document.getElementById('stat-today-budget');
     const totalTodayEstimated = todayEstimated + todayPlannedCost;
 
     if (todaySpent > totalTodayEstimated && totalTodayEstimated > 0) {
-        const over = todaySpent - totalTodayEstimated;
-        budgetEl.textContent = `₹${over} over budget`;
+        budgetEl.textContent = `₹${todaySpent - totalTodayEstimated} over budget`;
         budgetEl.style.color = '#ef4444';
     } else if (totalTodayEstimated > 0 && todaySpent < totalTodayEstimated) {
-        const under = totalTodayEstimated - todaySpent;
-        budgetEl.textContent = `₹${under} budget remaining`;
+        budgetEl.textContent = `₹${totalTodayEstimated - todaySpent} budget remaining`;
         budgetEl.style.color = '#10b981';
     } else if (totalTodayEstimated > 0) {
         budgetEl.textContent = 'On budget';
@@ -1505,26 +1578,84 @@ function renderDashboard() {
         budgetEl.style.color = 'var(--text-muted)';
     }
     
-    // Animate counters
     animateCounter(document.getElementById('stat-today-items'), todayCount, '', 500);
     animateCounter(document.getElementById('stat-today-spent'), todaySpent, '₹', 500);
     animateCounter(document.getElementById('stat-today-remaining'), remainingItems, '', 500);
     animateCounter(document.getElementById('stat-today-savings'), todaySavings, '₹', 500);
     
-    // Make savings card red if negative (overspent)
     const savingsCard = document.getElementById('stat-today-savings');
-    if (todaySavings < 0) {
-        savingsCard.style.color = '#ef4444';
-    } else {
-        savingsCard.style.color = 'var(--stat-text-4)';
-    }
+    savingsCard.style.color = todaySavings < 0 ? '#ef4444' : 'var(--stat-text-4)';
 
     renderRecentPurchases();
+    renderActionButtons(); // ONLY this - no old categories code!
+}
+
+function renderActionButtons() {
     const dc = document.getElementById('dash-categories');
-    dc.innerHTML = CATEGORIES.map(c => {
-        const count = items.filter(i => i.category === c.name).length;
-        return `<div class="bg-white dark:bg-slate-700 rounded-xl p-3 text-center shadow-sm cursor-pointer hover:scale-105 transition-all duration-200 stat-card" onclick="jumpToCategory('${c.name}')" style="background:var(--surface);"><p class="text-xl">${c.emoji}</p><p class="text-[10px] mt-1 font-semibold">${c.name}</p><p class="text-[11px] text-gray-400 font-medium">${count}</p></div>`;
-    }).join('');
+    if (!dc) return;
+    
+    const actions = [
+        { 
+            id: 'alerts', 
+            icon: '🔔', 
+            label: 'Alerts & Reminders',
+            desc: 'Stay on track'
+        },
+        { 
+            id: 'frequent', 
+            icon: '🔥', 
+            label: 'Frequently Bought',
+            desc: 'Quick reorder'
+        },
+        { 
+            id: 'suggestions', 
+            icon: '💡', 
+            label: 'Smart Suggestions',
+            desc: 'Based on history'
+        },
+        { 
+            id: 'budget', 
+            icon: '💰', 
+            label: 'Budget Overview',
+            desc: 'This month & year'
+        },
+        { 
+            id: 'overdue', 
+            icon: '❗', 
+            label: 'Overdue Items',
+            desc: 'Need attention'
+        }
+    ];
+    
+    dc.innerHTML = `
+        <div class="space-y-2">
+            ${actions.map(action => `
+                <button onclick="openActionPage('${action.id}')" 
+                    class="w-full flex items-center gap-3 p-3 rounded-xl transition-all duration-200 hover:scale-[1.02]"
+                    style="
+                        background: var(--surface);
+                        border: 1px solid var(--border-light);
+                        cursor: pointer;
+                        animation: cardIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+                    "
+                    onmouseenter="this.style.borderColor='var(--accent-light)'; this.style.boxShadow='var(--shadow-lg)'; this.style.transform='translateY(-2px)';"
+                    onmouseleave="this.style.borderColor='var(--border-light)'; this.style.boxShadow='none'; this.style.transform='translateY(0)';"
+                    onmousedown="this.style.transform='scale(0.985)';"
+                    onmouseup="this.style.transform='translateY(-2px)';">
+                    <div class="w-10 h-10 rounded-lg flex items-center justify-center text-lg flex-shrink-0"
+                        style="background: var(--accent-soft);">
+                        ${action.icon}
+                    </div>
+                    <div class="flex-1 text-left">
+                        <p class="text-sm font-semibold" style="color: var(--text-primary);">${action.label}</p>
+                        <p class="text-xs" style="color: var(--text-muted);">${action.desc}</p>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-4 h-4" style="color: var(--text-muted);"></i>
+                </button>
+            `).join('')}
+        </div>
+    `;
+    lucide.createIcons();
 }
 
 function renderRecentPurchases() {
@@ -2408,6 +2539,197 @@ window.startEdit = function(id) {
                     lucide.createIcons();
                 }
             };
+
+            // ==================== ACTION PAGES ====================
+
+window.openActionPage = function(actionId) {
+    // Hide all views
+    document.querySelectorAll('.view-section').forEach(section => {
+        section.classList.add('hidden');
+    });
+    
+    // Show selected action page
+    const actionView = document.getElementById(`view-${actionId}`);
+    if (actionView) {
+        actionView.classList.remove('hidden');
+        actionView.classList.remove('view-section');
+        void actionView.offsetWidth;
+        actionView.classList.add('view-section');
+        
+        // Render content
+        renderActionPage(actionId);
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        lucide.createIcons();
+    }
+};
+
+window.goBackToDashboard = function() {
+    currentView = 'dashboard';
+    document.querySelectorAll('.view-section').forEach(section => {
+        section.classList.add('hidden');
+    });
+    document.getElementById('view-dashboard').classList.remove('hidden');
+    
+    document.querySelectorAll('.nav-btn').forEach(b => {
+        b.classList.remove('nav-active');
+        b.classList.add('text-gray-400');
+        if (b.dataset.view === 'dashboard') {
+            b.classList.add('nav-active');
+            b.classList.remove('text-gray-400');
+        }
+    });
+    
+    showView();
+};
+
+function renderActionPage(actionId) {
+    const todayStr = new Date().toISOString().split('T')[0];
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowStr = tomorrow.toISOString().split('T')[0];
+    
+    switch(actionId) {
+        case 'alerts': renderAlertsPage(todayStr, tomorrowStr); break;
+        case 'frequent': renderFrequentPage(); break;
+        case 'suggestions': renderSuggestionsPage(); break;
+        case 'budget': renderBudgetPage(todayStr); break;
+        case 'overdue': renderOverduePage(todayStr); break;
+    }
+}
+
+function renderAlertsPage(todayStr, tomorrowStr) {
+    const todayItems = items.filter(i => !i.purchased && 
+        (i.purchasePlan === 'today' || (i.purchasePlan === 'custom' && i.customDate === todayStr) || !i.purchasePlan));
+    
+    document.getElementById('alerts-today-items').innerHTML = todayItems.length ? 
+        todayItems.map(item => `<div class="flex items-center justify-between p-3 rounded-xl" style="background: var(--bg-secondary);">
+            <div class="flex items-center gap-2"><span>${CATEGORIES.find(c=>c.name===item.category)?.emoji||'📦'}</span>
+            <span class="text-sm font-medium">${item.name}</span></div>
+            <span class="text-xs text-red-500 font-semibold">Due Today!</span></div>`).join('') :
+        '<p class="text-sm text-gray-400 text-center py-4">No items to buy today 🎉</p>';
+    
+    const tomorrowItems = items.filter(i => !i.purchased && 
+        (i.purchasePlan === 'tomorrow' || (i.purchasePlan === 'custom' && i.customDate === tomorrowStr)));
+    
+    document.getElementById('alerts-tomorrow-items').innerHTML = tomorrowItems.length ?
+        tomorrowItems.map(item => `<div class="flex items-center justify-between p-3 rounded-xl" style="background: var(--bg-secondary);">
+            <div class="flex items-center gap-2"><span>${CATEGORIES.find(c=>c.name===item.category)?.emoji||'📦'}</span>
+            <span class="text-sm font-medium">${item.name}</span></div>
+            <span class="text-xs text-amber-500 font-semibold">Tomorrow</span></div>`).join('') :
+        '<p class="text-sm text-gray-400 text-center py-4">Nothing planned for tomorrow</p>';
+    
+    const lowStock = items.filter(i => !i.purchased && i.quantity === 1);
+    document.getElementById('alerts-low-stock').innerHTML = lowStock.length ?
+        lowStock.map(item => `<div class="flex items-center justify-between p-3 rounded-xl" style="background: var(--bg-secondary);">
+            <div class="flex items-center gap-2"><span>${CATEGORIES.find(c=>c.name===item.category)?.emoji||'📦'}</span>
+            <span class="text-sm font-medium">${item.name}</span></div>
+            <span class="text-xs text-orange-500 font-semibold">Only ${item.quantity} left</span></div>`).join('') :
+        '<p class="text-sm text-gray-400 text-center py-4">No low stock items</p>';
+}
+
+function renderFrequentPage() {
+    const purchaseCount = {};
+    items.forEach(item => {
+        if (item.purchased && item.purchased_at) {
+            const key = item.name.toLowerCase();
+            if (!purchaseCount[key]) purchaseCount[key] = { count: 0, item };
+            purchaseCount[key].count++;
+        }
+    });
+    
+    const frequent = Object.values(purchaseCount).sort((a,b) => b.count - a.count).slice(0, 10);
+    
+    document.getElementById('frequent-items').innerHTML = frequent.length ?
+        frequent.map(({count, item}) => `<div class="flex items-center justify-between p-3 rounded-xl" style="background: var(--bg-secondary);">
+            <div class="flex items-center gap-3"><span class="text-lg">${CATEGORIES.find(c=>c.name===item.category)?.emoji||'📦'}</span>
+            <div><p class="text-sm font-semibold">${item.name}</p><p class="text-xs" style="color:var(--text-muted);">${item.category}</p></div></div>
+            <div class="flex items-center gap-2"><span class="text-xs font-bold px-2 py-1 rounded-full" style="background:var(--accent-light);color:var(--accent-dark);">${count}x</span>
+            <button onclick="quickAddToCart('${item.name}','${item.category}',${item.estimated_price||0},'${item.unit||'pcs'}')" class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-600 transition-all btn-press"><i data-lucide="plus-circle" class="w-4 h-4" style="color:var(--accent);"></i></button></div></div>`).join('') :
+        '<p class="text-sm text-gray-400 text-center py-8">Start shopping to see frequent items</p>';
+    lucide.createIcons();
+}
+
+window.quickAddToCart = async function(name, category, price, unit) {
+    if (items.length >= 999) { showToast('Max 999 items reached!', 'error'); return; }
+    await dataSdk.create({ name, category, estimated_price: price, quantity: 1, unit, favorite: false, pinned: false, purchased: false, actual_price: 0, created_at: new Date().toISOString(), purchased_at: '', notes: '', purchasePlan: 'today', customDate: '' });
+    showToast(`"${name}" added to your list! 🎉`, 'success');
+    renderFrequentPage();
+};
+
+function renderSuggestionsPage() {
+    const purchasedNames = new Set(items.filter(i=>i.purchased).map(i=>i.name.toLowerCase()));
+    const currentNames = new Set(items.filter(i=>!i.purchased).map(i=>i.name.toLowerCase()));
+    const suggestions = Array.from(purchasedNames).filter(n=>!currentNames.has(n)).slice(0, 8);
+    
+    if (!suggestions.length) {
+        document.getElementById('suggestions-list').innerHTML = '<p class="text-sm text-gray-400 text-center py-8">No suggestions right now. Keep shopping!</p>';
+        return;
+    }
+    
+    const suggestedItems = suggestions.map(name => items.find(i=>i.name.toLowerCase()===name&&i.purchased)).filter(Boolean);
+    
+    document.getElementById('suggestions-list').innerHTML = suggestedItems.map(item => 
+        `<div class="flex items-center justify-between p-3 rounded-xl" style="background: var(--bg-secondary);">
+            <div class="flex items-center gap-3"><span class="text-lg">${CATEGORIES.find(c=>c.name===item.category)?.emoji||'📦'}</span>
+            <div><p class="text-sm font-semibold">${item.name}</p><p class="text-xs" style="color:var(--text-muted);">You've bought this before</p></div></div>
+            <button onclick="quickAddToCart('${item.name}','${item.category}',${item.estimated_price||0},'${item.unit||'pcs'}')" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all btn-press" style="background:var(--accent);color:white;">Add Again</button></div>`
+    ).join('');
+}
+
+function renderBudgetPage(todayStr) {
+    const now = new Date();
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+    const yearStart = new Date(now.getFullYear(), 0, 1).toISOString().split('T')[0];
+    
+    const monthItems = items.filter(i=>i.purchased&&i.purchased_at&&i.purchased_at>=monthStart);
+    const monthSpent = monthItems.reduce((s,i)=>s+(i.actual_price||0),0);
+    const monthEst = monthItems.reduce((s,i)=>s+(i.estimated_price||0)*(i.quantity||1),0);
+    const monthSavings = monthEst - monthSpent;
+    
+    const yearItems = items.filter(i=>i.purchased&&i.purchased_at&&i.purchased_at>=yearStart);
+    const yearSpent = yearItems.reduce((s,i)=>s+(i.actual_price||0),0);
+    const yearEst = yearItems.reduce((s,i)=>s+(i.estimated_price||0)*(i.quantity||1),0);
+    const yearSavings = yearEst - yearSpent;
+    
+    document.getElementById('budget-month-spent').textContent = '₹' + monthSpent.toLocaleString('en-IN');
+    document.getElementById('budget-month-savings').textContent = '₹' + monthSavings.toLocaleString('en-IN');
+    document.getElementById('budget-year-spent').textContent = '₹' + yearSpent.toLocaleString('en-IN');
+    document.getElementById('budget-year-savings').textContent = '₹' + yearSavings.toLocaleString('en-IN');
+    
+    // Month category breakdown
+    const monthCats = {};
+    monthItems.forEach(i=>{ if(!monthCats[i.category]) monthCats[i.category]=0; monthCats[i.category]+=(i.actual_price||0); });
+    
+    document.getElementById('budget-month-details').innerHTML = Object.keys(monthCats).length ?
+        Object.entries(monthCats).sort((a,b)=>b[1]-a[1]).map(([cat,total])=>`<div class="flex items-center justify-between p-2 rounded-lg" style="background:var(--bg-secondary);"><span class="text-sm">${CATEGORIES.find(c=>c.name===cat)?.emoji||'📦'} ${cat}</span><span class="text-sm font-semibold">₹${total.toLocaleString('en-IN')}</span></div>`).join('') :
+        '<p class="text-sm text-gray-400 text-center py-4">No purchases this month</p>';
+    
+    // Year category breakdown
+    const yearCats = {};
+    yearItems.forEach(i=>{ if(!yearCats[i.category]) yearCats[i.category]=0; yearCats[i.category]+=(i.actual_price||0); });
+    
+    document.getElementById('budget-year-details').innerHTML = Object.keys(yearCats).length ?
+        Object.entries(yearCats).sort((a,b)=>b[1]-a[1]).map(([cat,total])=>`<div class="flex items-center justify-between p-2 rounded-lg" style="background:var(--bg-secondary);"><span class="text-sm">${CATEGORIES.find(c=>c.name===cat)?.emoji||'📦'} ${cat}</span><span class="text-sm font-semibold">₹${total.toLocaleString('en-IN')}</span></div>`).join('') :
+        '<p class="text-sm text-gray-400 text-center py-4">No purchases this year</p>';
+    
+    document.getElementById('budget-month-savings').style.color = monthSavings < 0 ? '#ef4444' : 'var(--stat-text-3)';
+    document.getElementById('budget-year-savings').style.color = yearSavings < 0 ? '#ef4444' : 'var(--stat-text-4)';
+}
+
+function renderOverduePage(todayStr) {
+    const overdue = items.filter(i=>!i.purchased&&i.purchasePlan==='custom'&&i.customDate&&i.customDate<todayStr)
+        .sort((a,b)=>new Date(a.customDate)-new Date(b.customDate));
+    
+    document.getElementById('overdue-items').innerHTML = overdue.length ?
+        overdue.map(item=>{const days=Math.floor((new Date(todayStr)-new Date(item.customDate))/(1000*60*60*24));
+            return `<div class="flex items-center justify-between p-3 rounded-xl" style="background:#fef2f2;border:1px solid #fecaca;">
+                <div class="flex items-center gap-3"><span class="text-lg">${CATEGORIES.find(c=>c.name===item.category)?.emoji||'📦'}</span>
+                <div><p class="text-sm font-semibold">${item.name}</p><p class="text-xs text-red-500 font-medium">${days} day${days>1?'s':''} overdue (planned: ${new Date(item.customDate).toLocaleDateString('en-IN',{day:'numeric',month:'short'})})</p></div></div>
+                <button onclick="startEdit('${item.__backendId}')" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all btn-press" style="background:var(--accent);color:white;">Reschedule</button></div>`}).join('') :
+        '<div class="text-center py-8"><p class="text-4xl mb-3">🎉</p><p class="text-sm text-gray-400">No overdue items!</p><p class="text-xs text-gray-400 mt-1">Everything is on track</p></div>';
+}
+// ==================== END ACTION PAGES ====================
 
             // Overview Modal
             document.getElementById('overview-more-btn').addEventListener('click', openOverviewModal);
