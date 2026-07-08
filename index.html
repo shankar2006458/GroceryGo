@@ -1083,7 +1083,7 @@ header:hover lottie-player{
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <input id="inp-qty" type="number" placeholder="Qty" class="w-full px-4 py-3.5 rounded-xl border text-sm" style="border-color:var(--border);background:var(--bg);color:var(--text-primary);" min="1" value="1">
-                    <input id="inp-price" type="number" placeholder="Est. price (₹)" class="w-full px-4 py-3.5 rounded-xl border text-sm" style="border-color:var(--border);background:var(--bg);color:var(--text-primary);" min="0">
+                    <input id="inp-price" type="number" placeholder="Total price (₹)" step="0.01" class="w-full px-4 py-3.5 rounded-xl border text-sm" style="border-color:var(--border);background:var(--bg);color:var(--text-primary);" min="0">
                 </div>
                 <!-- Purchase Plan -->
                 <div class="space-y-2">
@@ -1514,7 +1514,7 @@ function renderDashboard() {
     const todayItems = items.filter(i => i.purchased && i.purchased_at && i.purchased_at.split('T')[0] === todayStr);
     const todayCount = todayItems.length;
     const todaySpent = todayItems.reduce((s, i) => s + (i.actual_price || 0), 0);
-    const todayEstimated = todayItems.reduce((s, i) => s + (i.estimated_price || 0) * (i.quantity || 1), 0);
+const todayEstimated = todayItems.reduce((s, i) => s + (i.estimated_price || 0), 0);
     const todaySavings = todayEstimated - todaySpent;
     
     const remainingItems = items.filter(i => {
@@ -1559,7 +1559,7 @@ function renderDashboard() {
         if (i.purchasePlan === 'custom' && i.customDate === todayStr) return true;
         if (!i.purchasePlan) return true;
         return false;
-    }).reduce((s, i) => s + (i.estimated_price || 0) * (i.quantity || 1), 0);
+    }).reduce((s, i) => s + (i.estimated_price || 0), 0);
 
     const budgetEl = document.getElementById('stat-today-budget');
     const totalTodayEstimated = todayEstimated + todayPlannedCost;
@@ -1783,8 +1783,7 @@ function openOverviewModal() {
         return false;
     });
     const tomorrowCount = tomorrowItems.length;
-    const tomorrowCost = tomorrowItems.reduce((s, i) => s + (i.estimated_price || 0) * (i.quantity || 1), 0);
-
+const tomorrowCost = tomorrowItems.reduce((s, i) => s + (i.estimated_price || 0), 0);
     // This Year stats
     const yearItems = items.filter(i => i.purchased && i.purchased_at && i.purchased_at.split('T')[0] >= yearStart);
     const yearCount = yearItems.length;
@@ -2134,8 +2133,15 @@ window.refreshList = function() {
 function renderItemCard(item, index, animationDelay = null) {
     const cat = CATEGORIES.find(c => c.name === item.category);
     const emoji = cat ? cat.emoji : '📦';
-    const price = item.purchased && item.actual_price ? `₹${item.actual_price}` : (item.estimated_price ?
-        `~₹${item.estimated_price}` : '');
+// Show total price with quantity context
+const priceDisplay = item.purchased && item.actual_price ? 
+    `₹${item.actual_price}` : 
+    (item.estimated_price ? `₹${item.estimated_price}` : '');
+    
+const pricePerUnitDisplay = item.price_per_unit ? 
+    `(₹${item.price_per_unit.toFixed(2)}/${item.unit || 'pcs'})` : '';
+
+const price = priceDisplay + (pricePerUnitDisplay ? ` ${pricePerUnitDisplay}` : '');
     const qtyStr = item.quantity ? `${item.quantity} ${item.unit||'pcs'}` : '';
     const delay = animationDelay !== null ? animationDelay * 45 : index * 45;
     const cardClass = item.purchased ? 'list-card purchased-card' : 'list-card active-card';
@@ -2247,8 +2253,8 @@ function renderShopping() {
         if (group.items.length === 0) return;
         
         // Calculate group total
-        const groupTotal = group.items.reduce((sum, item) => sum + (item.estimated_price || 0), 0);
-        
+const groupTotal = group.items.reduce((sum, item) => sum + (item.estimated_price || 0), 0);
+
         html += `
             <div style="margin-bottom: 20px;">
                 <div class="flex items-center justify-between mb-2.5 px-1">
@@ -2276,7 +2282,14 @@ function renderShopping() {
                                 <p class="text-xs text-gray-400 font-medium">${cat?cat.emoji:''} ${item.category}${customDateStr ? ` · ${customDateStr}` : ''}</p>
                                 ${item.notes?`<p class="text-[11px] text-gray-400 mt-0.5 truncate">📝 ${item.notes}</p>`:''}
                             </div>
-                            ${item.estimated_price?`<span class="text-sm font-semibold" style="color: var(--text-secondary);">~₹${item.estimated_price}</span>`:''}
+                            ${item.estimated_price ? `
+<span class="text-sm font-semibold" style="color: var(--text-secondary);">
+    ₹${item.estimated_price}
+    <span class="text-xs font-normal" style="color: var(--text-muted);">
+        (${item.quantity || 1} ${item.unit || 'pcs'})
+    </span>
+</span>
+` : ''}
                         </div>`;
                     }).join('')}
                 </div>
@@ -2422,7 +2435,13 @@ window.startEdit = function(id) {
     editingItem = item;
     document.getElementById('inp-name').value = item.name;
     document.getElementById('inp-category').value = item.category;
-    document.getElementById('inp-price').value = item.estimated_price || '';
+    // If we stored total price directly, use it
+document.getElementById('inp-price').value = item.estimated_price || '';
+// If we only have price_per_unit, calculate total
+if (!item.estimated_price && item.price_per_unit) {
+    const total = (item.price_per_unit || 0) * (item.quantity || 1);
+    document.getElementById('inp-price').value = total;
+}
     document.getElementById('inp-qty').value = item.quantity || 1;
     document.getElementById('inp-unit').value = item.unit || 'pcs';
     document.getElementById('inp-notes').value = item.notes || '';
@@ -2472,18 +2491,23 @@ window.startEdit = function(id) {
                     return;
                 }
 
-                const data = {
-                    name,
-                    category: document.getElementById('inp-category').value,
-                    estimated_price: parseFloat(document.getElementById('inp-price').value) || 0,
-                    favorite: document.getElementById('inp-fav').checked,
-                    pinned: document.getElementById('inp-pin').checked,
-                    quantity: parseInt(document.getElementById('inp-qty').value) || 1,
-                    unit: document.getElementById('inp-unit').value,
-                    notes: document.getElementById('inp-notes').value.trim(),
-                    purchasePlan: purchasePlan,
-                    customDate: purchasePlan === 'custom' ? customDate : ''
-                };
+const totalPrice = parseFloat(document.getElementById('inp-price').value) || 0;
+const quantity = parseInt(document.getElementById('inp-qty').value) || 1;
+const pricePerUnit = quantity > 0 ? totalPrice / quantity : totalPrice;
+
+const data = {
+    name,
+    category: document.getElementById('inp-category').value,
+    estimated_price: totalPrice,  // Store total price
+    price_per_unit: pricePerUnit, // Store price per unit
+    favorite: document.getElementById('inp-fav').checked,
+    pinned: document.getElementById('inp-pin').checked,
+    quantity: quantity,
+    unit: document.getElementById('inp-unit').value,
+    notes: document.getElementById('inp-notes').value.trim(),
+    purchasePlan: purchasePlan,
+    customDate: purchasePlan === 'custom' ? customDate : ''
+};
                 if (editingItem) {
                     await dataSdk.update({ ...editingItem, ...data });
                     showToast(`"${name}" updated successfully`, 'success');
@@ -2652,7 +2676,7 @@ function renderFrequentPage() {
 
 window.quickAddToCart = async function(name, category, price, unit) {
     if (items.length >= 999) { showToast('Max 999 items reached!', 'error'); return; }
-    await dataSdk.create({ name, category, estimated_price: price, quantity: 1, unit, favorite: false, pinned: false, purchased: false, actual_price: 0, created_at: new Date().toISOString(), purchased_at: '', notes: '', purchasePlan: 'today', customDate: '' });
+    await dataSdk.create({ name, category, estimated_price: price, price_per_unit: price, quantity: 1, unit, favorite: false, pinned: false, purchased: false, actual_price: 0, created_at: new Date().toISOString(), purchased_at: '', notes: '', purchasePlan: 'today', customDate: '' });
     showToast(`"${name}" added to your list! 🎉`, 'success');
     renderFrequentPage();
 };
@@ -2684,12 +2708,12 @@ function renderBudgetPage(todayStr) {
     
     const monthItems = items.filter(i=>i.purchased&&i.purchased_at&&i.purchased_at>=monthStart);
     const monthSpent = monthItems.reduce((s,i)=>s+(i.actual_price||0),0);
-    const monthEst = monthItems.reduce((s,i)=>s+(i.estimated_price||0)*(i.quantity||1),0);
+const monthEst = monthItems.reduce((s,i)=>s+(i.estimated_price||0),0);
     const monthSavings = monthEst - monthSpent;
     
     const yearItems = items.filter(i=>i.purchased&&i.purchased_at&&i.purchased_at>=yearStart);
     const yearSpent = yearItems.reduce((s,i)=>s+(i.actual_price||0),0);
-    const yearEst = yearItems.reduce((s,i)=>s+(i.estimated_price||0)*(i.quantity||1),0);
+    const yearEst = yearItems.reduce((s,i)=>s+(i.estimated_price||0),0);
     const yearSavings = yearEst - yearSpent;
     
     document.getElementById('budget-month-spent').textContent = '₹' + monthSpent.toLocaleString('en-IN');
