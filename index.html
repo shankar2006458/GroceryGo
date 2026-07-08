@@ -8,6 +8,7 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js">
     </script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -760,6 +761,28 @@
 .under-budget {
     color: #10b981 !important;
 }
+lottie-player{
+    flex-shrink:0;
+    transition:transform .3s ease;
+}
+
+header:hover lottie-player{
+    transform:scale(1.08);
+}
+
+/* Add this with the other keyframe animations */
+@keyframes rotateRefresh {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.rotate-animation {
+    animation: rotateRefresh 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
     </style>
 </head>
 <body data-theme="emerald" class="min-h-screen pb-20 transition-colors duration-400">
@@ -774,9 +797,19 @@
 
     <header class="sticky top-0 z-40 glass px-4 py-3">
         <div class="flex items-center justify-between max-w-lg mx-auto">
-            <div class="flex items-center gap-2">
-                <span class="text-2xl">🛒</span>
-                <h1 class="text-xl font-bold tracking-tight">GroceryGo</h1>
+            <div class="flex items-center gap-2.5">
+                <lottie-player
+                    src="assets/logo.json"
+                    background="transparent"
+                    speed="1"
+                    style="width:40px;height:40px;"
+                    loop
+                    autoplay>
+                </lottie-player>
+
+                <h1 class="text-xl font-bold tracking-tight">
+                    GroceryGo
+                </h1>
             </div>
             <div class="relative">
                 <button id="theme-toggle-btn" class="w-9 h-9 rounded-xl flex items-center justify-center hover:bg-gray-100 dark:hover:bg-slate-700 transition-all duration-200 btn-press" aria-label="Change theme" title="Change theme">
@@ -835,12 +868,18 @@
         </div>
     </div>
 </div>
-            <!-- Monthly Spending -->
-            <div class="glass rounded-2xl p-5 mb-4 shadow-lg">
-                <h3 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">Monthly Spending</h3>
-                <div class="flex items-end gap-1.5 h-28 px-1" id="spending-bars"></div>
-                <div class="flex justify-between text-[10px] text-gray-400 mt-2 px-1" id="spending-labels"></div>
-            </div>
+<!-- Recent Purchases -->
+<div class="glass rounded-2xl p-5 mb-4 shadow-lg">
+    <div class="flex items-center justify-between mb-3">
+        <h3 class="font-semibold text-sm uppercase tracking-wider text-gray-400">🛍 Recently Purchased</h3>
+    </div>
+    <div id="recent-purchases" class="space-y-2.5">
+        <!-- Dynamic content -->
+    </div>
+    <button onclick="document.querySelector('[data-view=list]').click()" class="mt-3 w-full text-xs font-semibold py-2 rounded-xl transition-all btn-press" style="color: var(--accent); border: 1px solid var(--accent-light);">
+        View History →
+    </button>
+</div>
             <!-- Categories -->
             <div class="glass rounded-2xl p-5 shadow-lg">
                 <h3 class="font-semibold mb-3 text-sm uppercase tracking-wider text-gray-400">Categories</h3>
@@ -849,19 +888,24 @@
         </section>
 
         <!-- List -->
-        <section id="view-list" class="hidden view-section">
-            <div class="mb-3 relative">
-                <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
-                <input id="search-input" type="text" placeholder="Search items..." class="w-full pl-10 pr-4 py-3 rounded-xl border text-sm focus:outline-none focus:ring-2 transition-all duration-200" style="border-color:var(--border);background:var(--surface);color:var(--text-primary);">
-            </div>
-            <div class="flex gap-2 overflow-x-auto pb-2.5 mb-3 scroll-smooth" id="category-filters" style="scrollbar-width:none;-ms-overflow-style:none;"></div>
-            <div id="item-list" class="space-y-2.5"></div>
-            <div id="empty-state" class="hidden text-center py-16">
-                <p class="text-6xl mb-4">🛒</p>
-                <p class="text-gray-400 font-medium">Your grocery list is empty</p>
-                <p class="text-xs text-gray-400 mt-1">Tap + to add items</p>
-            </div>
-        </section>
+<section id="view-list" class="hidden view-section">
+    <div class="flex items-center gap-3 mb-3">
+        <div class="flex-1 relative">
+            <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"></i>
+            <input id="search-input" type="text" placeholder="Search items..." class="w-full pl-10 pr-4 py-3 rounded-xl border text-sm focus:outline-none focus:ring-2 transition-all duration-200" style="border-color:var(--border);background:var(--surface);color:var(--text-primary);">
+        </div>
+        <button onclick="refreshList()" class="p-3 rounded-xl border transition-all btn-press" style="border-color:var(--border);" title="Refresh list">
+            <i data-lucide="refresh-cw" id="refresh-icon" class="w-4 h-4" style="color: var(--text-muted);"></i>
+        </button>
+    </div>
+    <div class="flex gap-2 overflow-x-auto pb-2.5 mb-3 scroll-smooth" id="category-filters" style="scrollbar-width:none;-ms-overflow-style:none;"></div>
+    <div id="item-list" class="space-y-2.5"></div>
+    <div id="empty-state" class="hidden text-center py-16">
+        <p class="text-6xl mb-4">🛒</p>
+        <p class="text-gray-400 font-medium">Your grocery list is empty</p>
+        <p class="text-xs text-gray-400 mt-1">Tap + to add items</p>
+    </div>
+</section>
 
         <!-- Shopping -->
         <section id="view-shopping" class="hidden view-section">
@@ -945,29 +989,25 @@
                 <div class="space-y-2">
                     <label class="text-sm font-semibold" style="color: var(--text-secondary);">📅 Purchase Plan</label>
                     <div class="grid grid-cols-2 gap-2">
-                        <label class="flex items-center gap-2 p-2.5 rounded-xl border cursor-pointer hover:bg-gray-50 transition-all" style="border-color:var(--border);">
-                            <input type="radio" name="purchase-plan" value="today" class="accent-emerald-500 w-4 h-4">
-                            <span class="text-sm font-medium">Today</span>
-                        </label>
-                        <label class="flex items-center gap-2 p-2.5 rounded-xl border cursor-pointer hover:bg-gray-50 transition-all" style="border-color:var(--border);">
-                            <input type="radio" name="purchase-plan" value="tomorrow" class="accent-emerald-500 w-4 h-4">
-                            <span class="text-sm font-medium">Tomorrow</span>
-                        </label>
-                        <label class="flex items-center gap-2 p-2.5 rounded-xl border cursor-pointer hover:bg-gray-50 transition-all" style="border-color:var(--border);">
-                            <input type="radio" name="purchase-plan" value="this-week" class="accent-emerald-500 w-4 h-4">
-                            <span class="text-sm font-medium">This Week</span>
-                        </label>
-                        <label class="flex items-center gap-2 p-2.5 rounded-xl border cursor-pointer hover:bg-gray-50 transition-all" style="border-color:var(--border);">
-                            <input type="radio" name="purchase-plan" value="custom" class="accent-emerald-500 w-4 h-4">
-                            <span class="text-sm font-medium">Custom Date</span>
-                        </label>
+                    <label class="flex items-center gap-2 p-2.5 rounded-xl border cursor-pointer transition-all" style="border-color:var(--border);" onmouseenter="this.style.background='var(--accent-soft)'" onmouseleave="this.style.background=''">
+                        <input type="radio" name="purchase-plan" value="today" class="w-4 h-4" style="accent-color:var(--accent);">
+                        <span class="text-sm font-medium">Today</span>
+                    </label>
+                    <label class="flex items-center gap-2 p-2.5 rounded-xl border cursor-pointer transition-all" style="border-color:var(--border);" onmouseenter="this.style.background='var(--accent-soft)'" onmouseleave="this.style.background=''">
+                        <input type="radio" name="purchase-plan" value="tomorrow" class="w-4 h-4" style="accent-color:var(--accent);">
+                        <span class="text-sm font-medium">Tomorrow</span>
+                    </label>
+                    <label class="flex items-center gap-2 p-2.5 rounded-xl border cursor-pointer transition-all" style="border-color:var(--border);" onmouseenter="this.style.background='var(--accent-soft)'" onmouseleave="this.style.background=''">
+                        <input type="radio" name="purchase-plan" value="custom" class="w-4 h-4" style="accent-color:var(--accent);">
+                        <span class="text-sm font-medium">Custom Date</span>
+                    </label>
                     </div>
                     <input type="date" id="inp-custom-date" class="w-full px-4 py-3 rounded-xl border text-sm hidden" style="border-color:var(--border);background:var(--bg);color:var(--text-primary);" min="">
                 </div>
                 <textarea id="inp-notes" placeholder="Notes (optional)" class="w-full px-4 py-3.5 rounded-xl border text-sm resize-none" style="border-color:var(--border);background:var(--bg);color:var(--text-primary);" rows="2"></textarea>
                 <div class="flex gap-5">
-                    <label class="flex items-center gap-2 text-sm cursor-pointer"><input type="checkbox" id="inp-fav" class="accent-emerald-500 w-4 h-4"> ⭐ Favorite</label>
-                    <label class="flex items-center gap-2 text-sm cursor-pointer"><input type="checkbox" id="inp-pin" class="accent-emerald-500 w-4 h-4"> 📌 Pinned</label>
+<label class="flex items-center gap-2 text-sm cursor-pointer"><input type="checkbox" id="inp-fav" class="w-4 h-4" style="accent-color:var(--accent);"> ⭐ Favorite</label>
+<label class="flex items-center gap-2 text-sm cursor-pointer"><input type="checkbox" id="inp-pin" class="w-4 h-4" style="accent-color:var(--accent);"> 📌 Pinned</label>
                 </div>
                 <div class="flex gap-3 pt-2">
                     <button type="button" id="btn-cancel-add" class="flex-1 py-3.5 rounded-xl border font-medium btn-press" style="border-color:var(--border);color:var(--text-secondary);">Cancel</button>
@@ -1079,17 +1119,6 @@
                     }
                     localStorage.setItem('grocerygo_theme', theme);
                     this.updateSwatches();
-                    // Update accent color for checkboxes etc
-                    const accentMap = {
-                        emerald: '#10b981',
-                        ocean: '#3b82f6',
-                        sunset: '#f59e0b',
-                        rose: '#ec4899',
-                        midnight: '#818cf8'
-                    };
-                    document.querySelectorAll('.accent-emerald-500').forEach(el => {
-                        el.style.accentColor = accentMap[theme] || '#10b981';
-                    });
                 },
                 updateSwatches() {
                     document.querySelectorAll('.theme-swatch').forEach(swatch => {
@@ -1339,54 +1368,79 @@ window.deleteItem = function(id) {
                 });
             });
 
-            function showView() {
-                const dashboard = document.getElementById('view-dashboard');
-                const list = document.getElementById('view-list');
-                const shopping = document.getElementById('view-shopping');
-                const main = document.getElementById('main-content');
+function showView() {
+    const dashboard = document.getElementById('view-dashboard');
+    const list = document.getElementById('view-list');
+    const shopping = document.getElementById('view-shopping');
+    const main = document.getElementById('main-content');
 
-                // Quick crossfade
-                main.style.opacity = '0';
-                main.style.transform = 'translateY(4px)';
-                main.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+    // Quick crossfade
+    main.style.opacity = '0';
+    main.style.transform = 'translateY(4px)';
+    main.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
 
-                setTimeout(() => {
-                    dashboard.classList.toggle('hidden', currentView !== 'dashboard');
-                    list.classList.toggle('hidden', currentView !== 'list');
-                    shopping.classList.toggle('hidden', currentView !== 'shopping');
+    setTimeout(() => {
+        dashboard.classList.toggle('hidden', currentView !== 'dashboard');
+        list.classList.toggle('hidden', currentView !== 'list');
+        shopping.classList.toggle('hidden', currentView !== 'shopping');
 
-                    if (currentView === 'dashboard') renderDashboard();
-                    else if (currentView === 'list') renderList();
-                    else renderShopping();
+        if (currentView === 'dashboard') renderDashboard();
+        else if (currentView === 'list') renderList();
+        else renderShopping();
 
-                    // Re-add view-section animation class
-                    const activeSection = document.querySelector(
-                        `#view-${currentView === 'dashboard' ? 'dashboard' : currentView === 'list' ? 'list' : 'shopping'}`
-                        );
-                    if (activeSection) {
-                        activeSection.classList.remove('view-section');
-                        void activeSection.offsetWidth;
-                        activeSection.classList.add('view-section');
-                    }
+        // Re-add view-section animation class
+        const activeSection = document.querySelector(
+            `#view-${currentView === 'dashboard' ? 'dashboard' : currentView === 'list' ? 'list' : 'shopping'}`
+        );
+        if (activeSection) {
+            activeSection.classList.remove('view-section');
+            void activeSection.offsetWidth;
+            activeSection.classList.add('view-section');
+        }
 
-                    main.style.opacity = '1';
-                    main.style.transform = 'translateY(0)';
-                    lucide.createIcons();
-                }, 180);
-            }
+        main.style.opacity = '1';
+        main.style.transform = 'translateY(0)';
+        lucide.createIcons();
+
+        // 🔥 FIX: Scroll to top when switching views
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth' // 'smooth' for animated scroll, or 'auto' for instant
+        });
+        
+        // Also scroll the main content to top
+        main.scrollTop = 0;
+        
+    }, 180);
+}
 
 function renderDashboard() {
     const todayStr = new Date().toISOString().split('T')[0];
     
-    // Today's stats
+    // Today's purchased items
     const todayItems = items.filter(i => i.purchased && i.purchased_at && i.purchased_at.split('T')[0] === todayStr);
     const todayCount = todayItems.length;
     const todaySpent = todayItems.reduce((s, i) => s + (i.actual_price || 0), 0);
-    const todayEstimated = todayItems.reduce((s, i) => s + (i.estimated_price || 0), 0);
+    
+    // Today's estimated (purchased items' estimated prices)
+    const todayEstimated = todayItems.reduce((s, i) => s + (i.estimated_price || 0) * (i.quantity || 1), 0);
     const todaySavings = todayEstimated - todaySpent;
     
-    // Remaining items (not purchased)
-    const remainingItems = items.filter(i => !i.purchased).length;
+    // Remaining items (planned for today, not purchased)
+    const remainingItems = items.filter(i => {
+        if (i.purchased) return false;
+        
+        // Check if item is planned for today
+        if (i.purchasePlan === 'today') return true;
+        
+        // Check if custom date matches today
+        if (i.purchasePlan === 'custom' && i.customDate === todayStr) return true;
+        
+        // If no purchase plan set, consider it as today's item
+        if (!i.purchasePlan) return true;
+        
+        return false;
+    }).length;
     
     // Update today's date display
     const today = new Date();
@@ -1399,26 +1453,52 @@ function renderDashboard() {
     
     // Update status text
     const statusEl = document.getElementById('stat-today-status');
-    if (todayCount === 0) {
+    const todayPlannedItems = items.filter(i => {
+        if (i.purchased) return false;
+        if (i.purchasePlan === 'today') return true;
+        if (i.purchasePlan === 'custom' && i.customDate === todayStr) return true;
+        if (!i.purchasePlan) return true;
+        return false;
+    }).length;
+
+    if (todayCount === 0 && todayPlannedItems === 0) {
         statusEl.textContent = 'No purchases yet';
         statusEl.style.color = 'var(--text-muted)';
-    } else if (todayCount < 3) {
-        statusEl.textContent = 'Just getting started';
+    } else if (todayPlannedItems > 0 && todayCount === 0) {
+        statusEl.textContent = `${todayPlannedItems} items to buy today`;
         statusEl.style.color = 'var(--accent)';
-    } else {
-        statusEl.textContent = 'Active shopping day! 🎉';
+    } else if (todayPlannedItems > 0) {
+        statusEl.textContent = `${todayPlannedItems} more to buy today`;
         statusEl.style.color = 'var(--accent-dark)';
+    } else {
+        statusEl.textContent = 'All done for today! 🎉';
+        statusEl.style.color = '#10b981';
     }
     
-    // Update budget comparison
+    // Update budget comparison (for today's items only)
+    const todayPlannedCost = items
+        .filter(i => {
+            if (i.purchased) return false;
+            if (i.purchasePlan === 'today') return true;
+            if (i.purchasePlan === 'custom' && i.customDate === todayStr) return true;
+            if (!i.purchasePlan) return true;
+            return false;
+        })
+        .reduce((s, i) => s + (i.estimated_price || 0) * (i.quantity || 1), 0);
+
     const budgetEl = document.getElementById('stat-today-budget');
-    if (todaySpent > todayEstimated && todayEstimated > 0) {
-        const over = todaySpent - todayEstimated;
+    const totalTodayEstimated = todayEstimated + todayPlannedCost;
+
+    if (todaySpent > totalTodayEstimated && totalTodayEstimated > 0) {
+        const over = todaySpent - totalTodayEstimated;
         budgetEl.textContent = `₹${over} over budget`;
         budgetEl.style.color = '#ef4444';
-    } else if (todayEstimated > 0 && todaySpent < todayEstimated) {
-        const under = todayEstimated - todaySpent;
-        budgetEl.textContent = `₹${under} under budget`;
+    } else if (totalTodayEstimated > 0 && todaySpent < totalTodayEstimated) {
+        const under = totalTodayEstimated - todaySpent;
+        budgetEl.textContent = `₹${under} budget remaining`;
+        budgetEl.style.color = '#10b981';
+    } else if (totalTodayEstimated > 0) {
+        budgetEl.textContent = 'On budget';
         budgetEl.style.color = '#10b981';
     } else {
         budgetEl.textContent = 'No budget set';
@@ -1439,7 +1519,7 @@ function renderDashboard() {
         savingsCard.style.color = 'var(--stat-text-4)';
     }
 
-    renderSpending();
+    renderRecentPurchases();
     const dc = document.getElementById('dash-categories');
     dc.innerHTML = CATEGORIES.map(c => {
         const count = items.filter(i => i.category === c.name).length;
@@ -1447,7 +1527,92 @@ function renderDashboard() {
     }).join('');
 }
 
-            function openOverviewModal() {
+function renderRecentPurchases() {
+    const container = document.getElementById('recent-purchases');
+    if (!container) return;
+    
+    // Get purchased items sorted by most recent first
+    const purchasedItems = items
+        .filter(i => i.purchased && i.purchased_at)
+        .sort((a, b) => new Date(b.purchased_at) - new Date(a.purchased_at))
+        .slice(0, 5); // Show last 5 purchases
+    
+    if (purchasedItems.length === 0) {
+        container.innerHTML = `
+            <div class="text-center py-4">
+                <p class="text-sm text-gray-400">No purchases yet</p>
+                <p class="text-xs text-gray-400 mt-1">Start shopping to see history</p>
+            </div>
+        `;
+        return;
+    }
+    
+    container.innerHTML = purchasedItems.map(item => {
+        const timeAgo = getTimeAgo(item.purchased_at);
+        const cat = CATEGORIES.find(c => c.name === item.category);
+        const emoji = cat ? cat.emoji : '📦';
+        
+        return `
+            <div class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-all" 
+                 style="cursor: default;">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" 
+                     style="background: var(--accent-soft);">
+                    <span class="text-sm">✓</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-semibold truncate" style="color: var(--text-primary);">
+                        ${item.name}
+                    </p>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs" style="color: var(--text-muted);">
+                            ${emoji} ${item.category}
+                        </span>
+                        ${item.actual_price ? `
+                        <span class="text-xs font-semibold" style="color: var(--accent-dark);">
+                            ₹${item.actual_price}
+                        </span>
+                        ` : ''}
+                    </div>
+                </div>
+                <span class="text-xs flex-shrink-0" style="color: var(--text-muted);">
+                    ${timeAgo}
+                </span>
+            </div>
+        `;
+    }).join('');
+}
+
+function getTimeAgo(dateString) {
+    const now = new Date();
+    const date = new Date(dateString);
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+    
+    // Reset times for date comparison
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const purchaseDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    
+    // Format time
+    const timeStr = date.toLocaleTimeString('en-US', { 
+        hour: 'numeric', 
+        minute: '2-digit', 
+        hour12: true 
+    });
+    
+    if (diffMins < 1) return 'Just now';
+    if (diffMins < 60) return `${diffMins} min ago`;
+    if (purchaseDay.getTime() === today.getTime()) return `Today ${timeStr}`;
+    if (purchaseDay.getTime() === yesterday.getTime()) return 'Yesterday';
+    if (diffDays < 7) return `${diffDays} days ago`;
+    
+    return date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+}
+
+function openOverviewModal() {
     const now = new Date();
     const todayStr = now.toISOString().split('T')[0];
     
@@ -1464,20 +1629,30 @@ function renderDashboard() {
     // This year
     const yearStart = new Date(now.getFullYear(), 0, 1).toISOString().split('T')[0];
 
-    // Today stats
+    // Today stats (purchased today)
     const todayItems = items.filter(i => i.purchased && i.purchased_at && i.purchased_at.split('T')[0] === todayStr);
     const todayCount = todayItems.length;
     const todayCost = todayItems.reduce((s, i) => s + (i.actual_price || 0), 0);
 
-    // Yesterday stats
+    // Yesterday stats (purchased yesterday)
     const yesterdayItems = items.filter(i => i.purchased && i.purchased_at && i.purchased_at.split('T')[0] === yesterdayStr);
     const yesterdayCount = yesterdayItems.length;
     const yesterdayCost = yesterdayItems.reduce((s, i) => s + (i.actual_price || 0), 0);
 
-    // Tomorrow stats (items with estimated prices — planned)
-    const tomorrowItems = items.filter(i => !i.purchased && i.estimated_price > 0);
+    // Tomorrow stats (items with estimated prices — planned for tomorrow)
+    const tomorrowItems = items.filter(i => {
+        if (i.purchased) return false;
+        
+        // Check if item has purchase plan set to "tomorrow"
+        if (i.purchasePlan === 'tomorrow') return true;
+        
+        // Check if custom date matches tomorrow
+        if (i.purchasePlan === 'custom' && i.customDate === tomorrowStr) return true;
+        
+        return false;
+    });
     const tomorrowCount = tomorrowItems.length;
-    const tomorrowCost = tomorrowItems.reduce((s, i) => s + (i.estimated_price || 0), 0);
+    const tomorrowCost = tomorrowItems.reduce((s, i) => s + (i.estimated_price || 0) * (i.quantity || 1), 0);
 
     // This Year stats
     const yearItems = items.filter(i => i.purchased && i.purchased_at && i.purchased_at.split('T')[0] >= yearStart);
@@ -1558,7 +1733,6 @@ function closeOverviewModal() {
             window.filterCategory = function(cat) { activeCategory = cat;
                 renderList(); };
 
-
             
 function getDateGroup(purchasedAt) {
     if (!purchasedAt) return null;
@@ -1566,24 +1740,37 @@ function getDateGroup(purchasedAt) {
     const now = new Date();
     const purchaseDate = new Date(purchasedAt);
     
-    // Reset time for date comparison
+    // Reset time for date comparison - THIS FIXES THE ISSUE
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const yesterday = new Date(today);
     yesterday.setDate(yesterday.getDate() - 1);
     const purchaseDay = new Date(purchaseDate.getFullYear(), purchaseDate.getMonth(), purchaseDate.getDate());
     
+    // Check if purchase was today
     if (purchaseDay.getTime() === today.getTime()) {
         return { label: 'Today', emoji: '📅' };
-    } else if (purchaseDay.getTime() === yesterday.getTime()) {
+    } 
+    // Check if purchase was yesterday - THIS IS THE CRITICAL PART
+    else if (purchaseDay.getTime() === yesterday.getTime()) {
         return { label: 'Yesterday', emoji: '📆' };
-    } else {
+    } 
+    // Check if within last 7 days (show day name)
+    else if ((today - purchaseDay) / (1000 * 60 * 60 * 24) <= 7) {
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        return { 
+            label: days[purchaseDate.getDay()], 
+            emoji: '🗓️' 
+        };
+    }
+    // Older than 7 days - show full date
+    else {
         return { 
             label: purchaseDate.toLocaleDateString('en-IN', { 
                 day: 'numeric', 
                 month: 'short', 
                 year: 'numeric' 
             }),
-            emoji: '🗓️'
+            emoji: '📅'
         };
     }
 }
@@ -1594,28 +1781,81 @@ function groupItemsByDate(items) {
     
     // Group purchased items by date
     const groups = {};
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    
+    // Create a map to store items by date
+    const dateMap = new Map();
+    
     purchasedItems.forEach(item => {
-        const dateGroup = getDateGroup(item.purchased_at);
-        if (!dateGroup) return;
+        const purchaseDate = new Date(item.purchased_at);
+        const purchaseDay = new Date(purchaseDate.getFullYear(), purchaseDate.getMonth(), purchaseDate.getDate());
+        const dateKey = purchaseDay.getTime();
         
-        const key = dateGroup.label;
-        if (!groups[key]) {
-            groups[key] = { dateInfo: dateGroup, items: [] };
+        if (!dateMap.has(dateKey)) {
+            dateMap.set(dateKey, []);
         }
-        groups[key].items.push(item);
+        dateMap.get(dateKey).push(item);
     });
     
-    // Sort groups by date (most recent first)
+    // Sort dates in descending order (most recent first)
+    const sortedDates = Array.from(dateMap.keys()).sort((a, b) => b - a);
+    
+    // Build groups with proper labels
+    sortedDates.forEach(dateKey => {
+        const dateObj = new Date(dateKey);
+        const itemsForDate = dateMap.get(dateKey);
+        let label, emoji;
+        
+        // Check if it's today
+        if (dateKey === today.getTime()) {
+            label = 'Today';
+            emoji = '📅';
+        }
+        // Check if it's yesterday
+        else if (dateKey === yesterday.getTime()) {
+            label = 'Yesterday';
+            emoji = '📆';
+        }
+        // Check if within last 7 days
+        else if ((today.getTime() - dateKey) / (1000 * 60 * 60 * 24) <= 7) {
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            label = days[dateObj.getDay()];
+            emoji = '🗓️';
+        }
+        // Older than 7 days
+        else {
+            label = dateObj.toLocaleDateString('en-IN', { 
+                day: 'numeric', 
+                month: 'short', 
+                year: 'numeric' 
+            });
+            emoji = '📅';
+        }
+        
+        // Use a unique key for the group
+        const groupKey = `${label}_${dateKey}`;
+        groups[groupKey] = { 
+            dateInfo: { label, emoji, dateKey }, 
+            items: itemsForDate 
+        };
+    });
+    
+    // Convert to array and sort by date
     const sortedGroups = Object.values(groups).sort((a, b) => {
+        // Always show Today and Yesterday at the top
         if (a.dateInfo.label === 'Today') return -1;
         if (b.dateInfo.label === 'Today') return 1;
         if (a.dateInfo.label === 'Yesterday') return -1;
         if (b.dateInfo.label === 'Yesterday') return 1;
-        return new Date(b.items[0].purchased_at) - new Date(a.items[0].purchased_at);
+        return b.dateInfo.dateKey - a.dateInfo.dateKey;
     });
     
     return { sortedGroups, unpurchasedItems };
 }
+
 function renderList() {
     renderCategoryFilters();
     let filtered = [...items];
@@ -1640,7 +1880,7 @@ function renderList() {
     }
     empty.classList.add('hidden');
     
-    // Override container spacing - remove default gap
+    // Override container spacing
     container.style.display = 'flex';
     container.style.flexDirection = 'column';
     container.style.gap = '0';
@@ -1676,15 +1916,19 @@ function renderList() {
             </div>
         `;
         
-        sortedGroups.forEach((group, groupIndex) => {
+        sortedGroups.forEach((group) => {
+            const dateLabel = group.dateInfo.label;
+            const emoji = group.dateInfo.emoji;
+            const itemCount = group.items.length;
+            
             html += `
                 <div style="margin-bottom: 24px;">
                     <div class="flex items-center gap-2 mb-2.5 px-1">
-                        <span class="date-tag">${group.dateInfo.emoji} ${group.dateInfo.label}</span>
-                        <span class="text-xs font-medium" style="color: var(--text-muted);">${group.items.length} items</span>
+                        <span class="date-tag">${emoji} ${dateLabel}</span>
+                        <span class="text-xs font-medium" style="color: var(--text-muted);">${itemCount} items</span>
                     </div>
                     <div style="display:flex;flex-direction:column;gap:10px;">
-                        ${group.items.map((item, index) => renderItemCard(item, index, groupIndex * 100 + index)).join('')}
+                        ${group.items.map((item, index) => renderItemCard(item, index)).join('')}
                     </div>
                 </div>
             `;
@@ -1695,6 +1939,67 @@ function renderList() {
     lucide.createIcons();
 }
 
+window.refreshList = function() {
+    // Get the refresh icon by ID - THIS IS THE FIX
+    const refreshIcon = document.getElementById('refresh-icon');
+    
+    if (refreshIcon) {
+        // Remove any existing animation class first
+        refreshIcon.classList.remove('rotate-animation');
+        // Force a reflow to restart animation
+        void refreshIcon.offsetWidth;
+        // Add the animation class
+        refreshIcon.classList.add('rotate-animation');
+        // Remove animation class after it completes
+        setTimeout(() => {
+            refreshIcon.classList.remove('rotate-animation');
+        }, 800);
+    }
+    
+    // Show refreshing toast
+    showToast('🔄 Refreshing your list...', 'info');
+    
+    // Re-render the list
+    renderList();
+    lucide.createIcons();
+    
+    // Check if yesterday's items appear after refresh
+    setTimeout(() => {
+        const dateTags = document.querySelectorAll('.date-tag');
+        let hasYesterday = false;
+        dateTags.forEach(tag => {
+            if (tag.textContent.includes('Yesterday')) {
+                hasYesterday = true;
+            }
+        });
+        
+        if (hasYesterday) {
+            showToast('✅ List refreshed! Yesterday\'s purchases loaded.', 'success');
+        } else {
+            // If still no yesterday items, force a full re-render
+            showToast('🔄 Force refreshing all data...', 'info');
+            setTimeout(() => {
+                renderList();
+                lucide.createIcons();
+                // Check again
+                setTimeout(() => {
+                    const tags = document.querySelectorAll('.date-tag');
+                    let found = false;
+                    tags.forEach(tag => {
+                        if (tag.textContent.includes('Yesterday')) {
+                            found = true;
+                        }
+                    });
+                    if (found) {
+                        showToast('✅ Yesterday\'s purchases loaded successfully!', 'success');
+                    } else {
+                        showToast('ℹ️ No yesterday\'s purchases found', 'info');
+                    }
+                }, 300);
+            }, 500);
+        }
+    }, 300);
+};
 function renderItemCard(item, index, animationDelay = null) {
     const cat = CATEGORIES.find(c => c.name === item.category);
     const emoji = cat ? cat.emoji : '📦';
@@ -1849,22 +2154,47 @@ function renderShopping() {
     });
     
     // Add purchased section
-    if (purchased.length) {
-        html += `
-            <div class="mt-4 pt-4" style="border-top: 1px solid var(--border);">
-                <p class="text-xs text-gray-400 mb-3 font-semibold uppercase tracking-wider">✓ Done (${purchased.length})</p>
-                ${purchased.slice(0, 5).map(i =>
+// Add purchased section
+if (purchased.length) {
+    const showAll = purchased.length <= 6;
+    const displayItems = showAll ? purchased : purchased.slice(0, 5);
+    const hiddenCount = purchased.length - 5;
+    
+    html += `
+        <div class="mt-4 pt-4" style="border-top: 1px solid var(--border);">
+            <p class="text-xs text-gray-400 mb-3 font-semibold uppercase tracking-wider">✓ Done (${purchased.length})</p>
+            <div id="purchased-list">
+                ${displayItems.map(i =>
                     `<div class="rounded-xl p-3 flex items-center gap-3 opacity-50 mb-1.5" style="background:var(--bg-secondary);"><span style="color:var(--accent);">✓</span><span class="line-through text-sm">${i.name}</span></div>`
                 ).join('')}
-                ${purchased.length > 5 ? `<p class="text-xs text-gray-400 text-center mt-1 font-medium">+${purchased.length-5} more</p>` : ''}
             </div>
-        `;
-    }
+            ${!showAll ? `
+            <button id="show-more-purchased" class="w-full text-xs text-center mt-1 py-2 rounded-lg font-semibold transition-all btn-press" style="color:var(--accent);" onclick="expandPurchasedHistory()">
+                +${hiddenCount} more
+            </button>
+            <div id="hidden-purchased" class="hidden">
+                ${purchased.slice(5).map(i =>
+                    `<div class="rounded-xl p-3 flex items-center gap-3 opacity-50 mb-1.5" style="background:var(--bg-secondary);"><span style="color:var(--accent);">✓</span><span class="line-through text-sm">${i.name}</span></div>`
+                ).join('')}
+            </div>
+            ` : ''}
+        </div>
+    `;
+}
     
     container.innerHTML = html;
     lucide.createIcons();
 }
 
+window.expandPurchasedHistory = function() {
+    const hiddenDiv = document.getElementById('hidden-purchased');
+    const showMoreBtn = document.getElementById('show-more-purchased');
+    
+    if (hiddenDiv && showMoreBtn) {
+        hiddenDiv.classList.remove('hidden');
+        showMoreBtn.remove();
+    }
+};
             // Purchase
             window.initPurchase = function(id) {
                 const item = items.find(i => i.__backendId === id);
@@ -1997,7 +2327,19 @@ window.startEdit = function(id) {
                 const name = document.getElementById('inp-name').value.trim();
                 if (!name) return;
                 const purchasePlan = document.querySelector('input[name="purchase-plan"]:checked')?.value || '';
+                
+                // Validate purchase plan is selected
+                if (!purchasePlan) {
+                    showToast('Please select a purchase plan', 'warning');
+                    return;
+                }
+                
+                // Validate custom date if custom plan selected
                 const customDate = document.getElementById('inp-custom-date').value;
+                if (purchasePlan === 'custom' && !customDate) {
+                    showToast('Please select a custom date', 'warning');
+                    return;
+                }
 
                 const data = {
                     name,
